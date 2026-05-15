@@ -54,7 +54,9 @@
     [data-color="green"] { --accent: #00d4aa; --accent-dim: rgba(0, 212, 170, 0.15); --accent-glow: rgba(0, 212, 170, 0.4); }
     [data-color="orange"] { --accent: #ff9f43; --accent-dim: rgba(255, 159, 67, 0.15); --accent-glow: rgba(255, 159, 67, 0.4); }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent;
+scrollbar-width: thin;
+scrollbar-color: var(--accent) var(--bg); }
     body { font-family: 'Space Grotesk', sans-serif; background: var(--bg); color: var(--fg); min-height: 100vh; transition: background 0.4s ease, color 0.4s ease; }
     .mono { font-family: 'JetBrains Mono', monospace; }
 
