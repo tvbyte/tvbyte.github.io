@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LinkVault - Dynamic Sitemap</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="style.css" rel="stylesheet">
+</head>
+<body data-theme="dark" data-color="green">
+  <div id="scroll-progress"></div>
+  <button id="scrollTopBtn" title="Scroll to top">
+    <svg viewBox="0 0 50 50"><circle class="bg-circle" cx="25" cy="25" r="22"></circle><circle class="progress-circle" cx="25" cy="25" r="22"></circle></svg>
+    <span class="percent-text">0%</span>
+  </button>
+
+  <div class="bg-pattern"></div>
+  <div class="bg-grid"></div>
+
+  <header class="header">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background: var(--accent);">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--bg)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          </div>
+          <div><h1 class="text-lg font-bold tracking-tight">LinkVault</h1><p class="text-xs text-[var(--muted)] mono">manage your digital resources</p></div>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <div class="dropdown" id="colorDropdown">
+            <button class="dropdown-toggle"><span class="color-dot" style="background: var(--accent);"></span><span>Color</span><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></button>
+            <div class="dropdown-menu">
+              <div class="dropdown-item" data-color="red"><span class="color-dot" style="background: #ff4757;"></span>Red</div>
+              <div class="dropdown-item" data-color="blue"><span class="color-dot" style="background: #3b82f6;"></span>Blue</div>
+              <div class="dropdown-item active" data-color="green"><span class="color-dot" style="background: #00d4aa;"></span>Green</div>
+              <div class="dropdown-item" data-color="orange"><span class="color-dot" style="background: #ff9f43;"></span>Orange</div>
+            </div>
+          </div>
+          <div class="w-px h-8 bg-[var(--border)]"></div>
+          <button id="fullscreenBtn" class="theme-btn" title="Toggle Fullscreen">
+             <svg id="fsExpand" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+             <svg id="fsCompress" class="hidden" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"/></svg>
+          </button>
+          <div class="flex items-center gap-2">
+            <button class="theme-btn active" data-theme-btn="dark" title="Dark Theme"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
+            <button class="theme-btn" data-theme-btn="pitchblack" title="Pitch Black"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg></button>
+            <button class="theme-btn" data-theme-btn="light" title="Light Theme"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/></svg></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-10">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+      <div class="stat-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg><div><p class="text-xs text-[var(--muted)]">Total Links</p><p class="text-lg font-bold mono" id="totalLinks">0</p></div></div>
+      <div class="stat-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--danger)" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><div><p class="text-xs text-[var(--muted)]">Favorites</p><p class="text-lg font-bold mono" id="totalFavs">0</p></div></div>
+      <div class="stat-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg><div><p class="text-xs text-[var(--muted)]">Total Likes</p><p class="text-lg font-bold mono" id="totalLikes">0</p></div></div>
+      <div class="stat-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--warning)" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg><div><p class="text-xs text-[var(--muted)]">Total Clicks</p><p class="text-lg font-bold mono" id="totalClicks">0</p></div></div>
+    </div>
+
+    <div class="flex flex-col lg:flex-row gap-4 mb-6">
+      <div class="relative flex-1">
+        <svg class="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--muted)]" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="searchInput" class="search-input" placeholder="Search links, descriptions, tags...">
+      </div>
+      <div class="flex items-center gap-3">
+        <select id="perPageSelect" class="per-page-select"><option value="8">8 per page</option><option value="12" selected>12 per page</option><option value="24">24 per page</option><option value="48">48 per page</option></select>
+        <div class="view-toggle">
+          <button class="view-btn active" data-view="grid" title="Grid View"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></button>
+          <button class="view-btn" data-view="list" title="List View"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex flex-wrap gap-3 mb-8 items-center" id="categoryWrapper">
+      <div class="flex items-center gap-2">
+        <label for="categorySelect" class="filter-label">Category</label>
+        <select id="categorySelect" class="filter-select">
+          <option value="all">All Links</option>
+           <option value="Global">Global</option>
+          <option value="Bdix">Bdix</option>
+          <option value="Link">Link</option>
+          <option value="host">Host</option>
+        </select>
+      </div>
+      <span class="w-px h-8 bg-[var(--border)]"></span>
+      <div class="flex items-center gap-2">
+        <label for="filterSelect" class="filter-label">Filter</label>
+        <select id="filterSelect" class="filter-select">
+          <option value="">None</option>
+          <option value="favorites">Favorites</option>
+          <option value="most-clicked">Most Clicked</option>
+          <option value="updated">Updated</option>
+          <option value="top-rated">Top Rated</option>
+        </select>
+      </div>
+    </div>
+
+    <div id="linksContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"></div>
+
+    <div id="paginationContainer" class="mt-8 flex flex-col items-center gap-4">
+      <div class="pagination" id="pagination"></div>
+      <p class="text-sm text-[var(--muted)]" id="pageInfo"></p>
+    </div>
+
+    <div id="emptyState" class="hidden text-center py-20">
+      <svg class="mx-auto mb-4 text-[var(--muted)]" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <h3 class="text-xl font-semibold mb-2">No links found</h3>
+      <p class="text-[var(--muted)]">Try adjusting your search or filter</p>
+    </div>
+  </main>
+  <script src="list.js"></script>
+  <script>
+    let state = {
+      view: 'grid',
+      category: 'all',
+      search: '',
+      page: 1,
+      perPage: 12,
+      favorites: JSON.parse(localStorage.getItem('favorites') || '[]'),
+      clickCounts: JSON.parse(localStorage.getItem('clickCounts') || '{}'),
+      likes: JSON.parse(localStorage.getItem('likes') || '{}'),
+      dislikes: JSON.parse(localStorage.getItem('dislikes') || '{}'),
+      theme: localStorage.getItem('theme') || 'dark',
+      color: localStorage.getItem('color') || 'green'
+    };
+
+    const linksContainer = document.getElementById('linksContainer');
+    const emptyState = document.getElementById('emptyState');
+    const searchInput = document.getElementById('searchInput');
+    const perPageSelect = document.getElementById('perPageSelect');
+    const categoryWrapper = document.getElementById('categoryWrapper');
+    const categorySelect = document.getElementById('categorySelect');
+    const filterSelect = document.getElementById('filterSelect');
+    const viewBtns = document.querySelectorAll('[data-view]');
+    const themeBtns = document.querySelectorAll('[data-theme-btn]');
+    const paginationEl = document.getElementById('pagination');
+    const pageInfoEl = document.getElementById('pageInfo');
+    const paginationContainer = document.getElementById('paginationContainer');
+    const colorDropdown = document.getElementById('colorDropdown');
+    const colorItems = document.querySelectorAll('[data-color]');
+    const scrollProgress = document.getElementById('scroll-progress');
+    const fullscreenBtn = document.getElementById('fullscreenBtn');
+    const scrollTopBtn = document.getElementById('scrollTopBtn');
+    
+    function updateScrollProgress() {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+      
+      scrollProgress.style.width = scrollPercent + "%";
+      
+      const hue = Math.floor(scrollPercent * 1.2); 
+      const scrollColor = `hsl(${hue}, 80%, 50%)`;
+      scrollProgress.style.background = `linear-gradient(90deg, ${scrollColor}, hsl(${hue + 40}, 80%, 50%))`;
+
+      const progressCircle = scrollTopBtn.querySelector('.progress-circle');
+      const percentText = scrollTopBtn.querySelector('.percent-text');
+      const radius = progressCircle.r.baseVal.value;
+      const circumference = radius * 2 * Math.PI;
+      
+      progressCircle.style.strokeDasharray = `${circumference} ${circumference}`;
+      progressCircle.style.strokeDashoffset = circumference - (scrollPercent / 100) * circumference;
+      progressCircle.style.stroke = scrollColor;
+      
+      percentText.textContent = Math.round(scrollPercent) + '%';
+
+      if (scrollTop > 300) scrollTopBtn.classList.add('visible');
+      else scrollTopBtn.classList.remove('visible');
+    }
+
+    function saveState() {
+      localStorage.setItem('favorites', JSON.stringify(state.favorites));
+      localStorage.setItem('clickCounts', JSON.stringify(state.clickCounts));
+      localStorage.setItem('likes', JSON.stringify(state.likes));
+      localStorage.setItem('dislikes', JSON.stringify(state.dislikes));
+      localStorage.setItem('theme', state.theme);
+      localStorage.setItem('color', state.color);
+    }
+
+    function getFilteredLinks() {
+      let filtered = [...linksData];
+
+      if (state.search) {
+        const search = state.search.toLowerCase();
+        filtered = filtered.filter(link => 
+          link.name.toLowerCase().includes(search) ||
+          link.url.toLowerCase().includes(search) ||
+          link.labels.some(l => l.toLowerCase().includes(search)) ||
+          (link.description && link.description.toLowerCase().includes(search)) ||
+          (link.access && link.access.toLowerCase().includes(search))
+        );
+      }
+
+      const cat = state.category;
+      if (cat === 'favorites') {
+        filtered = filtered.filter(link => state.favorites.includes(link.id));
+      } else if (cat === 'most-clicked') {
+        filtered = filtered
+          .filter(link => (state.clickCounts[link.id] || 0) > 0)
+          .sort((a, b) => (state.clickCounts[b.id] || 0) - (state.clickCounts[a.id] || 0));
+      } else if (cat === 'updated') {
+        filtered = filtered.filter(link => link.updated);
+      } else if (cat === 'top-rated') {
+        filtered = filtered
+          .map(link => ({ ...link, score: (state.likes[link.id] || 0) - (state.dislikes[link.id] || 0) }))
+          .filter(link => link.score > 0)
+          .sort((a, b) => b.score - a.score);
+      } else if (cat !== 'all') {
+        filtered = filtered.filter(link => link.category === cat);
+      }
+
+      return filtered;
+    }
+
+    function getPaginatedLinks() {
+      const filtered = getFilteredLinks();
+      const start = (state.page - 1) * state.perPage;
+      const end = start + state.perPage;
+      return {
+        links: filtered.slice(start, end),
+        total: filtered.length,
+        totalPages: Math.ceil(filtered.length / state.perPage)
+      };
+    }
+
+    function getInitials(name) { return name.split(' ').map(word => word[0]).join('').toUpperCase().slice(0, 2); }
+    function getFaviconUrl(url) { try { const domain = new URL(url).hostname; return `https://www.google.com/s2/favicons?domain=${domain}&sz=64`; } catch { return null; } }
+    function getTechTagClass(tech) {
+        if (!tech) return '';
+        return { m3u: 'tag-m3u', js: 'tag-js', iframe: 'tag-iframe', html: 'tag-html' }[tech.toLowerCase()] || '';
+    }
+
+    function createLinkCard(link, index) {
+      const isFav = state.favorites.includes(link.id);
+      const clicks = state.clickCounts[link.id] || 0;
+      const likes = state.likes[link.id] || 0;
+      const dislikes = state.dislikes[link.id] || 0;
+      const faviconUrl = getFaviconUrl(link.url);
+      const isDisabled = link.disabled || false;
+
+      const card = document.createElement('div');
+      let cardClasses = 'link-card p-4 animate-in';
+      
+      if (state.view === 'list') {
+        cardClasses += ' flex flex-col sm:flex-row items-stretch sm:items-center gap-4';
+      }
+      
+      card.className = cardClasses;
+      card.style.animationDelay = `${index * 50}ms`;
+
+      const accessTagHtml = link.access ? `<span class="access-tag tag-${link.access}">${link.access}</span>` : '';
+      const statusDotHtml = `<span class="status-dot ${isDisabled ? 'status-offline' : 'status-online'}"></span>`;
+
+      const copyIcon = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>`;
+      const shareIcon = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>`;
+
+      const actionBtnsHtml = !isDisabled ? `
+        <button class="btn btn-secondary py-2 px-3" data-copy="${link.url}" title="Copy URL">${copyIcon}</button>
+        <button class="btn btn-secondary py-2 px-3" data-share="${link.url}" data-name="${link.name}" title="Share">${shareIcon}</button>
+      ` : '';
+
+      const visitBtnHtmlGrid = isDisabled ? 
+        `<button class="btn btn-primary flex-1 justify-center text-sm btn-disabled" disabled>Unavailable</button>` : 
+        `<a href="${link.url}" target="_blank" rel="noopener noreferrer" class="btn btn-primary flex-1 justify-center text-sm" data-link="${link.id}">Visit<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>`;
+
+      const gridActionButtons = `
+        <div class="flex gap-2 mt-4 w-full">
+          ${visitBtnHtmlGrid}
+          ${actionBtnsHtml}
+        </div>
+      `;
+
+      const visitBtnHtmlList = isDisabled ? 
+        `<button class="btn btn-primary text-sm py-2 px-4 btn-disabled" disabled>Unavailable</button>` : 
+        `<a href="${link.url}" target="_blank" rel="noopener noreferrer" class="btn btn-primary text-sm py-2 px-4" data-link="${link.id}">Visit<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>`;
+
+      const listActionButtons = `
+        <div class="flex items-center gap-2 ml-auto sm:ml-0">
+          ${visitBtnHtmlList}
+          ${actionBtnsHtml}
+        </div>
+      `;
+
+      card.innerHTML = `
+        <div class="relative z-10 ${state.view === 'list' ? 'flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full' : ''}">
+          ${state.view === 'grid' ? `
+            <div class="flex items-center justify-between mb-3">
+              <div class="flex items-center gap-3">
+                  <div class="icon-container">${faviconUrl ? `<img src="${faviconUrl}" alt="" class="w-6 h-6" onerror="this.parentElement.innerHTML='${getInitials(link.name)}'">` : getInitials(link.name)}</div>
+                  ${link.tech ? `<span class="tech-tag ${getTechTagClass(link.tech)}">${link.tech}</span>` : ''}
+              </div>
+            </div>
+            <div class="card-actions">
+              <button class="action-btn ${isFav ? 'active' : ''}" data-fav="${link.id}" title="Favorite"><svg width="14" height="14" viewBox="0 0 24 24" fill="${isFav ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+              <button class="action-btn vote-btn like-btn ${likes > 0 ? 'active' : ''}" data-like="${link.id}" title="Like"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>${likes > 0 ? `<span class="vote-count">${likes}</span>` : ''}</button>
+              <button class="action-btn vote-btn dislike-btn ${dislikes > 0 ? 'active' : ''}" data-dislike="${link.id}" title="Dislike"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"/></svg>${dislikes > 0 ? `<span class="vote-count">${dislikes}</span>` : ''}</button>
+            </div>
+          ` : ''}
+
+          ${link.updated ? '<div class="updated-badge"></div>' : ''}
+          
+          <div class="${state.view === 'list' ? 'flex-1 min-w-0 w-full sm:w-auto' : ''}">
+            <h3 class="font-semibold text-[var(--fg)] mb-1 truncate flex items-center gap-2">${link.name} ${statusDotHtml}</h3>
+            ${link.description ? `<p class="text-xs text-[var(--muted)] mb-2 line-clamp-1">${link.description}</p>` : ''}
+            <div class="flex items-center justify-between gap-2 mt-2">
+                <div class="flex flex-wrap items-center gap-2">
+                    ${link.labels.slice(0, 3).map(label => `<span class="text-xs px-2 py-1 rounded bg-[var(--bg-secondary)] text-[var(--muted)] border border-[var(--border)]">${label}</span>`).join('')}
+                    ${clicks > 0 ? `<span class="click-badge"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>${clicks}</span>` : ''}
+                </div>
+                ${accessTagHtml}
+            </div>
+          </div>
+
+          ${state.view === 'list' ? `
+            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3 w-full sm:w-auto flex-shrink-0 mt-4 sm:mt-0 pt-4 sm:pt-0 border-t sm:border-t-0 border-[var(--border)]">
+                <div class="flex items-center gap-3">
+                    <div class="icon-container">${faviconUrl ? `<img src="${faviconUrl}" alt="" class="w-6 h-6" onerror="this.parentElement.innerHTML='${getInitials(link.name)}'">` : getInitials(link.name)}</div>
+                    ${link.tech ? `<span class="tech-tag ${getTechTagClass(link.tech)}">${link.tech}</span>` : ''}
+                </div>
+                ${listActionButtons}
+            </div>
+          ` : gridActionButtons}
+        </div>`;
+      return card;
+    }
+
+    function renderPagination(totalPages) {
+      if (totalPages <= 1) { paginationContainer.classList.add('hidden'); return; }
+      paginationContainer.classList.remove('hidden');
+      let html = `<button class="page-btn" data-page="prev" ${state.page === 1 ? 'disabled' : ''}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></button>`;
+      
+      const maxVisible = 5;
+      let startPage = Math.max(1, state.page - Math.floor(maxVisible / 2));
+      let endPage = Math.min(totalPages, startPage + maxVisible - 1);
+      if (endPage - startPage + 1 < maxVisible) startPage = Math.max(1, endPage - maxVisible + 1);
+
+      if (startPage > 1) { html += `<button class="page-btn" data-page="1">1</button>`; if (startPage > 2) html += `<span class="px-2 text-[var(--muted)]">...</span>`; }
+      for (let i = startPage; i <= endPage; i++) html += `<button class="page-btn ${i === state.page ? 'active' : ''}" data-page="${i}">${i}</button>`;
+      if (endPage < totalPages) { if (endPage < totalPages - 1) html += `<span class="px-2 text-[var(--muted)]">...</span>`; html += `<button class="page-btn" data-page="${totalPages}">${totalPages}</button>`; }
+
+      html += `<button class="page-btn" data-page="next" ${state.page === totalPages ? 'disabled' : ''}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>`;
+      paginationEl.innerHTML = html;
+      
+      const { total } = getPaginatedLinks();
+      const start = (state.page - 1) * state.perPage + 1;
+      const end = Math.min(state.page * state.perPage, total);
+      pageInfoEl.textContent = `Showing ${start}-${end} of ${total} links`;
+    }
+
+    function syncSelects() {
+      const filterValues = ['favorites', 'most-clicked', 'updated', 'top-rated'];
+      if (filterValues.includes(state.category)) {
+        categorySelect.value = 'all';
+        filterSelect.value = state.category;
+      } else {
+        categorySelect.value = state.category;
+        filterSelect.value = '';
+      }
+    }
+
+    function updateFilterDisabledStates() {
+      const hasFavs = state.favorites.length > 0;
+      const hasClicks = Object.values(state.clickCounts).some(v => v > 0);
+      const hasUpdated = linksData.some(l => l.updated);
+      const hasLikes = Object.values(state.likes).some(v => v > 0);
+
+      filterSelect.querySelector('option[value="favorites"]').disabled = !hasFavs;
+      filterSelect.querySelector('option[value="most-clicked"]').disabled = !hasClicks;
+      filterSelect.querySelector('option[value="updated"]').disabled = !hasUpdated;
+      filterSelect.querySelector('option[value="top-rated"]').disabled = !hasLikes;
+    }
+
+    function renderLinks() {
+      const { links, total, totalPages } = getPaginatedLinks();
+      linksContainer.innerHTML = '';
+      
+      if (links.length === 0) {
+        emptyState.classList.remove('hidden');
+        linksContainer.classList.add('hidden');
+        paginationContainer.classList.add('hidden');
+      } else {
+        emptyState.classList.add('hidden');
+        linksContainer.classList.remove('hidden');
+        links.forEach((link, index) => linksContainer.appendChild(createLinkCard(link, index)));
+        renderPagination(totalPages);
+      }
+      updateStats();
+      syncSelects();
+      updateFilterDisabledStates();
+      setTimeout(updateScrollProgress, 100);
+    }
+
+    function updateStats() {
+      document.getElementById('totalLinks').textContent = linksData.length;
+      document.getElementById('totalFavs').textContent = state.favorites.length;
+      document.getElementById('totalClicks').textContent = Object.values(state.clickCounts).reduce((a, b) => a + b, 0);
+      document.getElementById('totalLikes').textContent = Object.values(state.likes).reduce((a, b) => a + b, 0);
+    }
+
+    function updateView() {
+      if (state.view === 'list') linksContainer.className = 'flex flex-col gap-3';
+      else linksContainer.className = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4';
+    }
+
+    function setTheme(theme) {
+      state.theme = theme;
+      document.body.setAttribute('data-theme', theme);
+      themeBtns.forEach(btn => btn.classList.toggle('active', btn.dataset.themeBtn === theme));
+      saveState();
+    }
+
+    function setColor(color) {
+      state.color = color;
+      document.body.setAttribute('data-color', color);
+      colorItems.forEach(item => item.classList.toggle('active', item.dataset.color === color));
+      const toggleDot = colorDropdown.querySelector('.dropdown-toggle .color-dot');
+      if (toggleDot) toggleDot.style.background = `var(--accent)`;
+      saveState();
+    }
+
+    window.addEventListener('scroll', updateScrollProgress);
+    scrollTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+    fullscreenBtn.addEventListener('click', () => {
+      if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(err => alert(`Error: ${err.message}`));
+      else document.exitFullscreen();
+    });
+    document.addEventListener('fullscreenchange', () => {
+      document.getElementById('fsExpand').classList.toggle('hidden', !!document.fullscreenElement);
+      document.getElementById('fsCompress').classList.toggle('hidden', !document.fullscreenElement);
+    });
+
+    themeBtns.forEach(btn => btn.addEventListener('click', () => setTheme(btn.dataset.themeBtn)));
+    colorDropdown.querySelector('.dropdown-toggle').addEventListener('click', (e) => { e.stopPropagation(); colorDropdown.classList.toggle('open'); });
+    colorItems.forEach(item => item.addEventListener('click', () => { setColor(item.dataset.color); colorDropdown.classList.remove('open'); }));
+    document.addEventListener('click', (e) => { if (!colorDropdown.contains(e.target)) colorDropdown.classList.remove('open'); });
+
+    categorySelect.addEventListener('change', (e) => {
+      state.category = e.target.value;
+      filterSelect.value = '';
+      state.page = 1;
+      renderLinks();
+    });
+
+    filterSelect.addEventListener('change', (e) => {
+      if (e.target.value === '') {
+        state.category = categorySelect.value;
+      } else {
+        state.category = e.target.value;
+      }
+      state.page = 1;
+      renderLinks();
+    });
+
+    viewBtns.forEach(btn => btn.addEventListener('click', () => { viewBtns.forEach(b => b.classList.remove('active')); btn.classList.add('active'); state.view = btn.dataset.view; updateView(); renderLinks(); }));
+    perPageSelect.addEventListener('change', (e) => { state.perPage = parseInt(e.target.value); state.page = 1; renderLinks(); });
+    searchInput.addEventListener('input', (e) => { state.search = e.target.value; state.page = 1; renderLinks(); });
+    paginationEl.addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-page]'); if (!btn || btn.disabled) return;
+      const page = btn.dataset.page; const { totalPages } = getPaginatedLinks();
+      if (page === 'prev') state.page = Math.max(1, state.page - 1);
+      else if (page === 'next') state.page = Math.min(totalPages, state.page + 1);
+      else state.page = parseInt(page);
+      renderLinks(); window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    document.addEventListener('click', (e) => {
+      const linkEl = e.target.closest('[data-link]');
+      if (linkEl && !e.defaultPrevented) { const id = parseInt(linkEl.dataset.link); state.clickCounts[id] = (state.clickCounts[id] || 0) + 1; saveState(); updateStats(); }
+      
+      const favBtn = e.target.closest('[data-fav]');
+      if (favBtn) { e.preventDefault(); e.stopPropagation(); const id = parseInt(favBtn.dataset.fav); if (state.favorites.includes(id)) state.favorites = state.favorites.filter(f => f !== id); else state.favorites.push(id); saveState(); renderLinks(); }
+      
+      const likeBtn = e.target.closest('[data-like]');
+      if (likeBtn) { e.preventDefault(); e.stopPropagation(); const id = parseInt(likeBtn.dataset.like); state.likes[id] = (state.likes[id] || 0) + 1; saveState(); renderLinks(); }
+      
+      const dislikeBtn = e.target.closest('[data-dislike]');
+      if (dislikeBtn) { e.preventDefault(); e.stopPropagation(); const id = parseInt(dislikeBtn.dataset.dislike); state.dislikes[id] = (state.dislikes[id] || 0) + 1; saveState(); renderLinks(); }
+
+      const copyBtn = e.target.closest('[data-copy]');
+      if (copyBtn) {
+        e.preventDefault(); e.stopPropagation();
+        const urlToCopy = copyBtn.dataset.copy;
+        const originalHTML = copyBtn.innerHTML;
+        navigator.clipboard.writeText(urlToCopy).then(() => {
+          copyBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+          setTimeout(() => { copyBtn.innerHTML = originalHTML; }, 1500);
+        }).catch(err => console.error('Failed to copy text: ', err));
+      }
+
+      const shareBtn = e.target.closest('[data-share]');
+      if (shareBtn) {
+        e.preventDefault(); e.stopPropagation();
+        const shareUrl = shareBtn.dataset.share;
+        const shareTitle = shareBtn.dataset.name || 'Check this out';
+        if (navigator.share) {
+          navigator.share({ title: shareTitle, url: shareUrl }).catch(err => console.log('Share failed', err));
+        } else {
+          const originalHTML = shareBtn.innerHTML;
+          navigator.clipboard.writeText(shareUrl).then(() => {
+            shareBtn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+            setTimeout(() => { shareBtn.innerHTML = originalHTML; }, 1500);
+          });
+        }
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === '/' && document.activeElement !== searchInput) { e.preventDefault(); searchInput.focus(); }
+      if (e.key === 'Escape') { searchInput.blur(); colorDropdown.classList.remove('open'); }
+    });
+
+    setTheme(state.theme);
+    setColor(state.color);
+    perPageSelect.value = state.perPage.toString();
+    renderLinks();
+
+  </script>
+</body>
+</html>
