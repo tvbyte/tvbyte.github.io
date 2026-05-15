@@ -1,0 +1,487 @@
+ :root {
+      --bg_nurmd2006: #08080c;
+      --s1_nurmd2006: #0e0e16;
+      --s2_nurmd2006: #161622;
+      --s3_nurmd2006: #1e1e30;
+      --bdr_nurmd2006: #2a2a40;
+      --t1_nurmd2006: #f0edff;
+      --t2_nurmd2006: #b8b4d0;
+      --t3_nurmd2006: #7b7799;
+      --acc_nurmd2006: #8b6cff;
+      --acc2_nurmd2006: #b9a5ff;
+      --grn_nurmd2006: #4ade80;
+      --red_nurmd2006: #fb7185;
+      --yel_nurmd2006: #fcd34d;
+      --font_nurmd2006: 'Syne', sans-serif;
+      --mono_nurmd2006: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: var(--font_nurmd2006);
+      background: var(--bg_nurmd2006);
+      color: var(--t1_nurmd2006);
+      overflow: hidden;
+      height: 100vh;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    ::-webkit-scrollbar {
+      width: 4px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--bdr_nurmd2006);
+      border-radius: 4px;
+    }
+
+    #hdr_nurmd2006 {
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      background: var(--s1_nurmd2006);
+      border-bottom: 1px solid var(--bdr_nurmd2006);
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+    }
+    .logo_area_nurmd2006 {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    #mbtn_nurmd2006 {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--t1_nurmd2006);
+      font-size: 20px;
+      cursor: pointer;
+    }
+    #channelCount_nurmd2006 {
+      font-family: var(--mono_nurmd2006);
+      font-size: 11px;
+      color: var(--t2_nurmd2006);
+      padding: 6px 14px;
+      border: 1.5px solid var(--bdr_nurmd2006);
+      border-radius: 20px;
+      background: var(--s2_nurmd2006);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    #channelCount_nurmd2006:hover {
+      border-color: var(--acc_nurmd2006);
+      color: var(--t1_nurmd2006);
+    }
+
+    #wrap_nurmd2006 {
+      position: fixed;
+      top: 48px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: flex;
+    }
+    #side_nurmd2006 {
+      width: 340px;
+      min-width: 340px;
+      background: var(--s1_nurmd2006);
+      border-right: 1px solid var(--bdr_nurmd2006);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .sbar_nurmd2006 {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--bdr_nurmd2006);
+      display: flex;
+      gap: 6px;
+    }
+    #srch_nurmd2006 {
+      flex: 1;
+      padding: 8px 12px;
+      background: var(--s2_nurmd2006);
+      border: 1.5px solid var(--bdr_nurmd2006);
+      border-radius: 8px;
+      color: var(--t1_nurmd2006);
+      font-family: var(--font_nurmd2006);
+      font-size: 12px;
+      outline: none;
+    }
+    #srch_nurmd2006:focus {
+      border-color: var(--acc_nurmd2006);
+    }
+    #srch_nurmd2006::placeholder {
+      color: var(--t3_nurmd2006);
+    }
+    .icon_btn_nurmd2006 {
+      width: 38px;
+      height: 38px;
+      background: var(--s2_nurmd2006);
+      border: 1.5px solid var(--bdr_nurmd2006);
+      border-radius: 8px;
+      color: var(--t2_nurmd2006);
+      cursor: pointer;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: all 0.2s;
+    }
+    .icon_btn_nurmd2006:hover {
+      border-color: var(--acc_nurmd2006);
+      color: var(--t1_nurmd2006);
+    }
+    .icon_btn_nurmd2006.active_nurmd2006 {
+      background: var(--acc_nurmd2006);
+      border-color: var(--acc_nurmd2006);
+      color: #fff;
+    }
+
+    .tabs_nurmd2006 {
+      display: flex;
+      overflow-x: auto;
+      gap: 6px;
+      padding: 8px 12px;
+      background: var(--s1_nurmd2006);
+      flex-shrink: 0;
+      border-bottom: 1px solid var(--bdr_nurmd2006);
+    }
+    .tabs_nurmd2006::-webkit-scrollbar {
+      display: none;
+    }
+    .tab_nurmd2006 {
+      padding: 6px 16px;
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--t2_nurmd2006);
+      cursor: pointer;
+      border: 1.5px solid var(--bdr_nurmd2006);
+      white-space: nowrap;
+      border-radius: 20px;
+      transition: all 0.2s;
+      background: transparent;
+    }
+    .tab_nurmd2006.on_nurmd2006 {
+      color: #fff;
+      background: var(--acc_nurmd2006);
+      border-color: var(--acc_nurmd2006);
+    }
+
+    #chlist_nurmd2006 {
+      flex: 1;
+      overflow-y: auto;
+      padding: 6px 8px;
+    }
+
+    .ad_wrapper_nurmd2006 {
+      margin: 10px 4px;
+      background: var(--s2_nurmd2006);
+      border: 1px solid var(--bdr_nurmd2006);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .ad_header_nurmd2006 {
+      text-align: center;
+      padding: 6px;
+      font-size: 9px;
+      color: var(--t3_nurmd2006);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      border-bottom: 1px solid var(--bdr_nurmd2006);
+    }
+    .ad_content_nurmd2006 {
+      padding: 5px;
+      min-height: 250px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg_nurmd2006);
+    }
+
+    .ch_nurmd2006 {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      border: 1.5px solid transparent;
+      margin-bottom: 2px;
+      width: 100%;
+    }
+    .ch_nurmd2006:hover {
+      background: var(--s2_nurmd2006);
+      border-color: var(--bdr_nurmd2006);
+    }
+    .ch_nurmd2006.on_nurmd2006 {
+      background: rgba(139, 108, 255, 0.15);
+      border-color: rgba(139, 108, 255, 0.4);
+    }
+    .ch_logo_nurmd2006 {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+      font-size: 12px;
+      font-weight: 700;
+      color: #333333;
+    }
+    .ch_logo_nurmd2006 img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background: #ffffff;
+    }
+    .ch_info_nurmd2006 {
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+    }
+    .ch_name_nurmd2006 {
+      font-size: 12px;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: block;
+      width: 100%;
+      line-height: 1.4;
+    }
+    .ch_meta_nurmd2006 {
+      font-size: 9px;
+      color: var(--t2_nurmd2006);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: block;
+      width: 100%;
+    }
+    .live_dot_nurmd2006 {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 4px;
+      flex-shrink: 0;
+    }
+    .live_dot_nurmd2006.online_nurmd2006 {
+      background: var(--grn_nurmd2006);
+    }
+    .live_dot_nurmd2006.offline_nurmd2006 {
+      background: var(--red_nurmd2006);
+    }
+    .fav_star_nurmd2006 {
+      color: var(--t2_nurmd2006);
+      cursor: pointer;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+    .fav_star_nurmd2006.active_nurmd2006 {
+      color: var(--yel_nurmd2006);
+    }
+
+    .footer_bar_nurmd2006 {
+      text-align: center;
+      padding: 10px;
+      font-size: 8px;
+      color: var(--t3_nurmd2006);
+      font-family: var(--mono_nurmd2006);
+      letter-spacing: 1px;
+      border-top: 1px solid var(--bdr_nurmd2006);
+      flex-shrink: 0;
+    }
+    .footer_bar_nurmd2006 a {
+      color: var(--acc2_nurmd2006);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    #main_nurmd2006 {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: #000;
+      min-width: 0;
+    }
+    #player_nurmd2006 {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+      background: #000;
+    }
+    #player_nurmd2006 video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+    #watermark_nurmd2006 {
+      position: absolute;
+      bottom: 60px;
+      right: 20px;
+      z-index: 8;
+      opacity: 0.25;
+      cursor: pointer;
+      color: white;
+      font-weight: 700;
+      font-size: 14px;
+      text-shadow: 0 0 12px rgba(0, 0, 0, 0.9);
+    }
+
+    #overlay_nurmd2006 {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.92);
+      z-index: 10;
+      flex-direction: column;
+    }
+    #overlay_nurmd2006.hidden_nurmd2006 {
+      display: none;
+    }
+    .spinner_nurmd2006 {
+      width: 44px;
+      height: 44px;
+      border: 3px solid var(--bdr_nurmd2006);
+      border-top-color: var(--acc_nurmd2006);
+      border-radius: 50%;
+      animation: spin_nurmd2006 0.8s linear infinite;
+      margin-bottom: 16px;
+    }
+    @keyframes spin_nurmd2006 {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+    .status_text_nurmd2006 {
+      font-size: 13px;
+      color: var(--t2_nurmd2006);
+      font-weight: 600;
+    }
+
+    #nowbar_nurmd2006 {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 16px;
+      background: var(--s1_nurmd2006);
+      border-top: 1px solid var(--bdr_nurmd2006);
+      flex-shrink: 0;
+    }
+    #np_logo_nurmd2006 {
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+    #np_logo_nurmd2006 img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background: #ffffff;
+    }
+    .np_info_nurmd2006 {
+      flex: 1;
+      min-width: 0;
+    }
+    #np_name_nurmd2006 {
+      font-weight: 700;
+      font-size: 12px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    #np_meta_nurmd2006 {
+      font-size: 9px;
+      color: var(--t2_nurmd2006);
+    }
+    .ctrl_btns_nurmd2006 {
+      display: flex;
+      gap: 4px;
+    }
+    .ctrl_btn_nurmd2006 {
+      width: 36px;
+      height: 36px;
+      border-radius: 6px;
+      border: 1.5px solid var(--bdr_nurmd2006);
+      background: var(--s2_nurmd2006);
+      color: var(--t1_nurmd2006);
+      font-size: 13px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    @media (max-width: 800px) {
+      #side_nurmd2006 {
+        position: fixed;
+        left: -340px;
+        top: 48px;
+        bottom: 0;
+        z-index: 200;
+        transition: left 0.3s;
+      }
+      #side_nurmd2006.open_nurmd2006 {
+        left: 0;
+      }
+      #shade_nurmd2006 {
+        display: none;
+        position: fixed;
+        top: 48px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 199;
+      }
+      #shade_nurmd2006.open_nurmd2006 {
+        display: block;
+      }
+      #mbtn_nurmd2006 {
+        display: block;
+      }
+    }
+    
+    /* Active Button Border - Logo Color */
+.ctrl_btn_nurmd2006:active {
+  border-color: #8B5CF6 !important;
+  box-shadow: 0 0 12px rgba(139, 92, 246, 0.4) !important;
+}
+
+.icon_btn_nurmd2006:active {
+  border-color: #8B5CF6 !important;
+  box-shadow: 0 0 12px rgba(139, 92, 246, 0.4) !important;
+}
+
+#channelCount_nurmd2006:active {
+  border-color: #8B5CF6 !important;
+  box-shadow: 0 0 12px rgba(139, 92, 246, 0.4) !important;
+}
