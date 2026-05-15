@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- ========================= SEO Tags Start ========================= -->
+<title>LiveFY IPTV - Watch Free Live TV, Sports & News</title>
+<meta name="description" content="উপভোগ করুন বাফারিংহীন লাইভ টিভি। LiveFY IPTV-তে সকল বাংলা চ্যানেল, স্পোর্টস, মুভি এবং আরও অনেক কিছু এখন হাতের মুঠোয়। Watch free Live TV online.">
+<meta name="keywords" content="LiveFY IPTV, Live TV, BDIX TV, Bangla Live TV, Sports Live, Online TV, Kolkata TV, Streaming, Free IPTV Bangladesh, HD Live TV">
+<meta name="author" content="LiveFY">
+<meta name="robots" content="index, follow">
+
+<!-- Open Graph / Facebook / WhatsApp Share Tags -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://t.me/livefytv">
+<meta property="og:title" content="LiveFY IPTV - Premium Live TV Streaming">
+<meta property="og:description" content="LiveFY IPTV-তে সকল বাংলা চ্যানেল, স্পোর্টস এবং মুভি উপভোগ করুন একদম ফ্রিতে।">
+<meta property="og:image" content="https://i.ibb.co.com/604f9xmX/file-000000005814720bbb4c1485d0863b3a.png">
+
+<!-- Twitter Card Tags -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="LiveFY IPTV - Premium Live TV Streaming">
+<meta name="twitter:description" content="LiveFY IPTV-তে সকল বাংলা চ্যানেল, স্পোর্টস এবং মুভি উপভোগ করুন একদম ফ্রিতে।">
+<meta name="twitter:image" content="https://i.ibb.co.com/604f9xmX/file-000000005814720bbb4c1485d0863b3a.png">
+<!-- ========================= SEO Tags End ========================= -->
+
+<link rel="icon" type="image/png" href="https://i.ibb.co.com/604f9xmX/file-000000005814720bbb4c1485d0863b3a.png"> 
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="preloader"><span class="loader"></span></div>
+
+<div class="main-container" id="mainApp">
+    <div class="content-area">
+        <div class="video-player-container" id="playerContainer">
+            <div class="player-loader" id="playerLoader"><div class="spinner"></div></div>
+            
+            <div id="player-poster"></div>
+
+            <div id="error-display">
+                <div class="error-content">
+                    <i class="fas fa-exclamation-triangle error-icon"></i>
+                    <div class="error-text">Stream Not Available</div>
+                </div>
+            </div>
+
+            <video id="video-player" autoplay></video>
+            <div id="qualityMenu" class="quality-menu"></div>
+            
+            <div id="watermark" class="player-watermark">
+                <div class="glass-brand">
+                    <div class="brand-main-text">LiveFY  IPTV</div>
+                </div>
+            </div>
+
+            <div id="controls" class="custom-controls">
+                <button class="control-btn" id="playPauseBtn"><i class="fas fa-pause"></i></button>
+                <div class="live-text"><span class="live-dot"></span> LIVE</div>
+                <div class="spacer"></div>
+                <button class="control-btn" id="qualityBtn"><i class="fas fa-cog"></i></button>
+                <div class="volume-box">
+                    <button class="control-btn" id="muteBtn"><i class="fas fa-volume-up"></i></button>
+                    <input type="range" id="volumeSlider" min="0" max="1" step="0.1" value="1">
+                </div>
+                <button class="control-btn" id="fullScreenBtn"><i class="fas fa-expand"></i></button>
+            </div>
+        </div>
+
+        <div class="ad-ticker-container">
+            <div class="ad-label">NOTICE</div>
+            <div class="ticker-wrap">
+                <div class="ad-ticker-text">LiveFY  IPTV — উপভোগ করুন বাফারিংহীন লাইভ টিভি। সব চ্যানেল এখন হাতের মুঠোয়!</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <div class="channel-stats">
+                <i class="fas fa-tv"></i> Channels: <span id="totalChannelCount">0</span>
+            </div>
+           
+        </div>
+
+        <nav class="category-nav">
+            <ul id="categoryList">
+                <li data-category="bangla" class="active">Bangla</li>
+                <li data-category="sports">Sports</li>
+                <li data-category="india">India</li>
+                <li data-category="kolkata">Kolkata</li>
+                <li data-category="others">Others</li>
+            </ul>
+        </nav>
+        <div class="channel-grid" id="channelGrid"></div>
+    </div>
+</div>
+
+<!-- GitHub Hit Counter & Copyright Footer -->
+<div class="custom-footer" id="customFooter">
+    <div class="footer-text">
+        © Copyright 2026, Developed
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+<script src="app.js"></script>
+
+</body>
+</html>
