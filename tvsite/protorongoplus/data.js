@@ -8,7 +8,7 @@ var PLAYLIST_SOURCES = [
     ];
     
      (function () {
-  const allowedDomain = "";
+  const allowedDomain = "https://tvbyte.github.io/";
   const currentDomain = window.location.hostname;
 
   if (currentDomain !== allowedDomain) {
@@ -117,7 +117,7 @@ var PLAYLIST_SOURCES = [
         clearInterval(interval);
 
         
-        window.location.href = "";
+        window.location.href = "https://tvbyte.github.io/";
       }
     }, 1000);
 
