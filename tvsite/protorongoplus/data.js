@@ -13,7 +13,7 @@ var PLAYLIST_SOURCES = [
 
   if (currentDomain !== allowedDomain) {
 
-    document.documentElement.innerHTML = "";
+    document.documentElement.innerHTML = "https://tvbyte.github.io/";
 
     const style = document.createElement("style");
     style.innerHTML = `
