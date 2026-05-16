@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LIVE TV</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.7/dist/hls.min.js"></script>
+    <link href="style.css" rel="stylesheet">
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <a href="/" class="logo">
+            <!-- <div class="logo-icon">📺</div> -->
+            <div class="logo-text">LIVE TV</div>
+        </a>
+        <div style="font-weight: 600; color: #ffffff; font-size: 14px; padding: 6px 12px; border-radius: 12px; background: #000000;">
+            37 Channels
+        </div>
+    </header>
+
+    <!-- App Wrapper -->
+    <div class="wrapper">
+        
+        <!-- Left: Player Area -->
+        <main class="main-content">
+            <div class="video-container" id="videoContainer">
+                <video id="videoPlayer" controls autoplay></video>
+                <div class="video-placeholder" id="videoPlaceholder">
+                    <div class="video-placeholder-icon">🍿</div>
+                    <h3 style="font-weight: 600; font-size: 18px;">Select a channel to watch</h3>
+                    <p style="opacity: 0.7; font-size: 14px;">Live streams from over 37 channels</p>
+                    <div class="spinner" id="playerSpinner"></div>
+                </div>
+            </div>
+            <div class="player-info" id="playerInfo" style="display: none;">
+                <div class="player-channel-meta">
+                    <div class="live-badge"><div class="live-dot"></div> LIVE NOW</div>
+                    <span id="playerCatDisplay" style="text-transform: capitalize;">—</span>
+                </div>
+                <div class="player-channel-title" id="playerTitle">Channel Name</div>
+            </div>
+        </main>
+
+        <!-- Right: Sidebar List -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="search-box">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="searchInput" placeholder="Search channels..." autocomplete="off">
+                </div>
+                <div class="filter-chips">
+                    <button class="chip active" data-filter="all">All</button>
+                    <button class="chip" data-filter="sports">Sports</button>
+                    <button class="chip" data-filter="news">News</button>
+                    <button class="chip" data-filter="entertainment">Entertainment</button>
+                </div>
+            </div>
+            <div class="channel-list" id="channelList">
+                <!-- Channels injected via JS -->
+            </div>
+        </aside>
+
+    </div>
+   <script src="app.js"></script>
+    <script>
+             
+        // Categorization & Color Setup
+        const sportKeywords = ['sport', 'star sport', 't sports', 'cricket', 'football'];
+        const newsKeywords  = ['news', 'atn', 'dbc', 'ekattor', 'jamuna', 'somoy', 'channel 24', 'news24', 'nagorik'];
+
+        function classify(name) {
+            const n = name.toLowerCase();
+            if (sportKeywords.some(k => n.includes(k))) return 'sports';
+            if (newsKeywords.some(k => n.includes(k)))  return 'news';
+            return 'entertainment';
+        }
+
+        // Lavender themed colors for icons
+        const iconColors = ['#9074c2', '#a288ce', '#8566b8', '#9980c9', '#b5a1db'];
+
+        channels.forEach((ch, idx) => {
+            ch.category = classify(ch.name);
+            ch.color = iconColors[idx % iconColors.length];
+            const words = ch.name.split(/\s+/);
+            ch.abbr = words.length >= 2 
+                ? (words[0][0] + words[1][0]).toUpperCase() 
+                : ch.name.substring(0, 2).toUpperCase();
+        });
+
+        // State
+        let hlsInstance = null;
+        let currentFilter = 'all';
+        let searchQuery = '';
+        let activeChannelId = null;
+
+        // DOM
+        const listEl = document.getElementById('channelList');
+        const searchInput = document.getElementById('searchInput');
+        const video = document.getElementById('videoPlayer');
+        const placeholder = document.getElementById('videoPlaceholder');
+        const spinner = document.getElementById('playerSpinner');
+        const playerInfo = document.getElementById('playerInfo');
+        const playerTitle = document.getElementById('playerTitle');
+        const playerCatDisplay = document.getElementById('playerCatDisplay');
+
+        // Render Sidebar List
+        function renderList() {
+            listEl.innerHTML = '';
+            
+            const filtered = channels.filter(ch => {
+                const matchCat = currentFilter === 'all' || ch.category === currentFilter;
+                const matchSearch = ch.name.toLowerCase().includes(searchQuery.toLowerCase());
+                return matchCat && matchSearch;
+            });
+
+            if (filtered.length === 0) {
+                listEl.innerHTML = `<div class="no-results">No channels found</div>`;
+                return;
+            }
+
+            filtered.forEach(ch => {
+                const item = document.createElement('div');
+                item.className = `channel-item ${ch.id === activeChannelId ? 'active' : ''}`;
+                item.innerHTML = `
+                    <div class="channel-icon" style="background: #000000; color: #ffffff;">${ch.abbr}</div>
+                    <div class="channel-info-col">
+                        <div class="channel-name">${ch.name}</div>
+                        <div class="channel-cat">${ch.category}</div>
+                    </div>
+                    <div class="item-live-indicator"></div>
+                `;
+                item.addEventListener('click', () => playChannel(ch));
+                listEl.appendChild(item);
+            });
+        }
+
+        // Play Channel
+        function playChannel(ch) {
+            activeChannelId = ch.id;
+            renderList(); // re-render to update active state
+            
+            // UI Updates
+            placeholder.style.background = 'rgba(0,0,0,0.8)';
+            placeholder.innerHTML = '';
+            placeholder.appendChild(spinner);
+            placeholder.style.display = 'flex';
+            spinner.style.display = 'block';
+            
+            playerInfo.style.display = 'flex';
+            playerTitle.textContent = ch.name;
+            playerCatDisplay.textContent = ch.category;
+
+            if (hlsInstance) { hlsInstance.destroy(); hlsInstance = null; }
+
+            // HLS Setup
+            if (Hls.isSupported()) {
+                const hls = new Hls({ enableWorker: true, lowLatencyMode: true });
+                hls.loadSource(ch.url);
+                hls.attachMedia(video);
+                hls.on(Hls.Events.MANIFEST_PARSED, () => {
+                    placeholder.style.display = 'none';
+                    video.play().catch(() => {});
+                });
+                hls.on(Hls.Events.ERROR, (_, d) => {
+                    if (d.fatal) {
+                        placeholder.innerHTML = '<span style="color:var(--live-color); font-weight:600;">Stream unavailable. Please try another channel.</span>';
+                        placeholder.style.display = 'flex';
+                    }
+                });
+                hlsInstance = hls;
+            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                video.src = ch.url;
+                video.addEventListener('loadedmetadata', () => {
+                    placeholder.style.display = 'none';
+                    video.play().catch(() => {});
+                }, { once: true });
+            }
+
+            // Scroll to top on mobile
+            if (window.innerWidth <= 1024) {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        // Event Listeners for Filters
+        document.querySelectorAll('.chip').forEach(chip => {
+            chip.addEventListener('click', (e) => {
+                document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+                chip.classList.add('active');
+                currentFilter = chip.dataset.filter;
+                renderList();
+            });
+        });
+
+        // Event Listener for Search
+        searchInput.addEventListener('input', (e) => {
+            searchQuery = e.target.value;
+            renderList();
+        });
+
+        // Initial Render
+        renderList();
+    </script>
+
+</body>
+</html>
