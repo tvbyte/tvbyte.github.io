@@ -103,7 +103,7 @@
     .tag-js { background: rgba(255, 235, 59, 0.2); color: #fff176; border: 1px solid rgba(255, 235, 59, 0.3); }
     .tag-iframe { background: rgba(33, 150, 243, 0.2); color: #90caf9; border: 1px solid rgba(33, 150, 243, 0.3); }
     .tag-html { background: rgba(255, 87, 34, 0.2); color: #ff8a65; border: 1px solid rgba(255, 87, 34, 0.3); }
-
+     .tag-json { background: rgba(255, 87, 34, 0.2); color: #ff8a80; border: 1px solid rgba(255, 87, 34, 0.3); }
     .access-tag { font-size: 10px; padding: 2px 8px; border-radius: 100px; font-weight: 600; text-transform: capitalize; flex-shrink: 0; margin-left: auto; }
     .tag-free { background: rgba(46, 213, 115, 0.15); color: #2ed573; border: 1px solid rgba(46, 213, 115, 0.3); }
     .tag-premium { background: rgba(255, 215, 0, 0.15); color: #ffd700; border: 1px solid rgba(255, 215, 0, 0.3); }
