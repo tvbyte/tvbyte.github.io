@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Livefy TV (Create By HASAN)</title>
+    
+    <!-- HLS.js for Live Streaming -->
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+</head>
+<body>
+
+    <header class="main-header">
+        <div id="three-dot-menu" class="three-dot-menu"> <i class="fas fa-bars"></i> </div>
+        <div class="header-content">
+            <a href="#" onclick="showTab('home-section', document.getElementById('nav-home')); return false;" style="text-decoration: none; color: inherit;">
+                <div class="header-title">LIVEFY TV</div>
+            </a>
+            <div class="flag-bd">
+                <div class="red-circle"></div>
+            </div>
+        </div>
+        <div class="header-actions">
+            <!-- Theme Toggle Icon -->
+            <div id="theme-toggle">
+                <i class="fas fa-sun"></i>
+            </div>
+            <!-- Notification Icon -->
+            <div id="notification-bell">
+                <i class="fas fa-bell"></i>
+                <span id="notification-count">0</span>
+                <div id="notification-panel">
+                    <div class="notification-header">Live Matches</div>
+                    <ul id="notification-list" class="notification-list"></ul>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <div class="update-bar">
+        <span class="update-label">UPDATE</span>
+        <div class="update-marquee">
+            <span id="update-text-content">Loading...</span>
+        </div>
+    </div>
+
+    <div id="popup-overlay" class="popup-overlay"></div>
+    <div id="side-popup" class="side-popup">
+        <div class="popup-header"> <h2>Menu</h2> <button id="close-popup-btn" class="close-popup-btn">&times;</button> </div>
+        <ul class="popup-nav">
+            <li id="popup-nav-home" class="popup-nav-item"> <svg fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"></path></svg> <span>Home</span> </li>
+            <li id="popup-nav-channels" class="popup-nav-item"> <svg fill="currentColor" viewBox="0 0 24 24"><path d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 1.99-.9 1.99-2L23 5c0-1.1-.9-2-2-2zm0 14H3V5h18v12z"></path></svg> <span>Live TV</span> </li>
+            <li id="popup-nav-movies" class="popup-nav-item"> <svg fill="currentColor" viewBox="0 0 24 24"><path d="M18 4v1h-2V4c0-.55-.45-1-1-1H9c-.55 0-1 .45-1 1v1H6V4c0-.55-.45-1-1-1s-1 .45-1 1v16c0 .55.45 1 1 1s1-.45 1-1v-1h2v1c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-1h2v1c0 .55.45 1 1 1s1-.45 1-1V4c0-.55-.45-1-1-1s-1 .45-1 1zM8 17H6v-2h2v2zm0-4H6v-2h2v2zm0-4H6V7h2v2zm10 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V7h2v2z"/></svg> <span>Movies</span> </li>
+            <li id="popup-nav-playlist" class="popup-nav-item hidden"> <svg fill="currentColor" viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-8 12.5v-9l6 4.5-6 4.5z"></path></svg> <span>My Playlist</span> </li>
+            <li id="popup-nav-contact" class="popup-nav-item"> <svg fill="currentColor" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"></path></svg> <span>Contact Us</span> </li>
+            <li id="popup-nav-copyright" class="popup-nav-item"> <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"></path></svg> <span>Copyright</span> </li>
+            <li id="popup-nav-about" class="popup-nav-item"> <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"></path></svg> <span>About Us</span> </li>
+        </ul>
+    </div>
+    
+    <div id="alert-modal" class="alert-modal">
+        <div class="alert-modal-content"> <button class="alert-close-btn" onclick="closeAlert()">&times;</button>
+            <div class="alert-content"> <h3 id="alert-title-container">Loading...</h3> <p id="alert-message-container">Loading...</p> </div>
+        </div>
+    </div>
+    
+    <div class="content">
+        <div id="home-section">
+            <div class="section-header">
+                <h2><button class="alert-btn" onclick="showAlert()"><i class="fas fa-bell"></i> Alert</button></h2>
+                <div id="online-users-container" class="online-users-box">
+                    <i class="fas fa-users"></i>&nbsp;Online: <span id="online-count">0</span>
+                </div>
+                <a href="#" id="telegram-link" class="join-now-link" target="_blank" rel="noopener noreferrer"><i class="fab fa-telegram-plane"></i> Join Now</a>
+                <div id="time-display-home" class="datetime-box"></div>
+            </div>
+            <div class="banner" id="home-banner-top"> <a href="#" target="_blank" rel="noopener noreferrer"><img src="" alt="Banner" class="banner-image"></a> </div> 
+            <div class="filter-tabs" id="match-tabs-container"> 
+                <button class="tab-btn active-tab" onclick="filterMatches('all', this)">ALL <span id="count-all" class="tab-count">0</span></button> 
+                <button class="tab-btn" onclick="filterMatches('live', this)">LIVE <span id="count-live" class="tab-count">0</span></button> 
+                <button class="tab-btn" onclick="filterMatches('upcoming', this)">UPCOMING <span id="count-upcoming" class="tab-count">0</span></button> 
+                <button class="tab-btn" onclick="filterMatches('recent', this)">RECENT <span id="count-recent" class="tab-count">0</span></button> 
+            </div> 
+            <div id="match-list-container" style="display: flex; flex-direction: column;"></div> 
+            <div class="banner" id="home-banner-bottom"> <a href="#" target="_blank" rel="noopener noreferrer"><img src="" alt="Banner" class="banner-image"></a> </div> 
+        </div>
+        
+        <div id="sports-channels-section" class="hidden"> 
+            <div class="section-header"> <h2>Live TV</h2> <a href="#" id="telegram-link-channels" class="join-now-link" target="_blank" rel="noopener noreferrer"><i class="fab fa-telegram-plane"></i> Join Now</a> <div id="time-display-channels" class="datetime-box"></div> </div> 
+            <div class="filter-tabs" id="channel-category-tabs"></div> 
+            <div class="channel-grid" id="channel-grid-container"></div> 
+            <div class="banner" id="channels-banner"> <a href="#" target="_blank" rel="noopener noreferrer"><img src="" alt="Banner" class="banner-image"></a> </div> 
+        </div>
+        
+        <!-- === Movies Section === -->
+        <div id="movies-section" class="hidden"> 
+            <div class="section-header"> <h2>Movies</h2> <a href="#" id="telegram-link-movies" class="join-now-link" target="_blank" rel="noopener noreferrer"><i class="fab fa-telegram-plane"></i> Join Now</a> <div id="time-display-movies" class="datetime-box"></div> </div> 
+            <div class="filter-tabs" id="movie-category-tabs"></div> 
+            <div id="movies-container" class="movies-grid"></div> 
+            <!-- Movies Banner Included Here -->
+            <div class="banner" id="movies-banner"> <a href="#" target="_blank" rel="noopener noreferrer"><img src="" alt="Banner" class="banner-image"></a> </div> 
+        </div>
+        
+        <div id="playlist-section" class="hidden">
+            <div class="section-header"> <h2>My Playlist</h2> <a href="#" id="telegram-link-playlist" class="join-now-link" target="_blank" rel="noopener noreferrer"><i class="fab fa-telegram-plane"></i> Join Now</a> <div id="time-display-playlist" class="datetime-box"></div> </div>
+            <div class="filter-tabs" id="main-playlist-tabs"></div>
+            <div class="filter-tabs" id="playlist-category-tabs"></div>
+            <div class="channel-grid" id="playlist-grid-container"></div> 
+        </div>
+
+        <div id="about-us-section" class="hidden">
+            <div class="section-header"> 
+                <h2>About Us</h2>
+                <div id="time-display-about" class="datetime-box"></div> 
+            </div>
+            <div class="about-content">
+                <h2>Welcome to Livefy TV</h2>
+                <p>
+                    <strong>Livefy TV</strong> is your ultimate destination for streaming live sports matches, thrilling movies, and a vast collection of live TV channels, all in one place. Our mission is to provide a seamless and high-quality streaming experience for all entertainment enthusiasts.
+                </p>
+                <p>
+                    This platform was developed and is passionately maintained by <strong>HASAN</strong>. We are constantly working to improve the service and add new features to enhance your viewing experience.
+                </p>
+                <p>
+                    <strong>Disclaimer:</strong> We do not host any content on our own servers. All streams and videos found on our platform are sourced from third-party services that are freely available on the internet. We are not responsible for the legality or copyright of the content.
+                </p>
+            </div>
+        </div>
+
+        <div id="contact-section" class="hidden">
+            <div class="section-header"> 
+                <h2>Contact Us</h2>
+                <div id="time-display-contact" class="datetime-box"></div> 
+            </div>
+            <div class="about-content">
+                <h2>Get in Touch</h2>
+                <p>
+                    We value your feedback and are here to assist you. If you have any questions, suggestions, or issues, please don't hesitate to reach out to us.
+                </p>
+                <p>
+                    <strong>Telegram:</strong> For the quickest support and to join our community, please join our official Telegram channel.
+                </p>
+            </div>
+        </div>
+
+        <div id="copyright-section" class="hidden">
+            <div class="section-header"> 
+                <h2>Copyright Policy</h2>
+                <div id="time-display-copyright" class="datetime-box"></div> 
+            </div>
+            <div class="about-content">
+                <h2>Copyright & Disclaimer</h2>
+                <p>
+                    <strong>Livefy TV</strong> respects the intellectual property rights of others and expects its users to do the same. All content, including live streams, TV channels, and movies, are sourced from third-party websites that are publicly accessible on the internet.
+                </p>
+                <p>
+                    We do <strong>not</strong> host, upload, or control any of the video content displayed on this platform. The streams are embedded from external sources.
+                </p>
+                <p>
+                    This website is for personal and non-commercial use only. All rights reserved © <span id="footer-year">2024</span> Livefy TV.
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ===[ Video Player Wrapper (Video + Iframe) ]=== -->
+    <div id="video-player"> 
+        <button id="close-btn" onclick="closeVideo()">❌</button> 
+        <div id="video-container-wrapper"> 
+            <div class="video-wrapper" id="main-video-wrapper"> 
+                <video id="video" playsinline controls></video>
+               <!-- Iframe Sandbox Removed -->
+               <iframe id="iframe-player" src="" allow="autoplay; fullscreen; encrypted-media; picture-in-picture" allowfullscreen="true" scrolling="no" frameborder="0"></iframe>
+               <span id="livefy-text-animator">LIVEFY TV</span>
+            </div> 
+        </div> 
+        <div id="controls-area"> 
+            <div id="server-buttons"></div> 
+        </div> 
+    </div>
+    
+    <nav class="bottom-nav">
+        <div id="nav-home" class="nav-item active" onclick="showTab('home-section', this)"> <svg fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"></path></svg> <span>Home</span> </div>
+        <div id="nav-channels" class="nav-item" onclick="showTab('sports-channels-section', this)"> <svg fill="currentColor" viewBox="0 0 24 24"><path d="M21 3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h5v2h8v-2h5c1.1 0 1.99-.9 1.99-2L23 5c0-1.1-.9-2-2-2zm0 14H3V5h18v12z"></path></svg> <span>Live TV</span> </div>
+        <div id="nav-movies" class="nav-item" onclick="showTab('movies-section', this)"> <svg fill="currentColor" viewBox="0 0 24 24"><path d="M18 4v1h-2V4c0-.55-.45-1-1-1H9c-.55 0-1 .45-1 1v1H6V4c0-.55-.45-1-1-1s-1 .45-1 1v16c0 .55.45 1 1 1s1-.45 1-1v-1h2v1c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-1h2v1c0 .55.45 1 1 1s1-.45 1-1V4c0-.55-.45-1-1-1s-1 .45-1 1zM8 17H6v-2h2v2zm0-4H6v-2h2v2zm0-4H6V7h2v2zm10 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V7h2v2z"/></svg> <span>Movies</span> </div>
+        <div id="nav-playlist" class="nav-item hidden" onclick="showTab('playlist-section', this)"> <svg fill="currentColor" viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-8 12.5v-9l6 4.5-6 4.5z"></path></svg> <span>My Playlist</span> </div>
+    </nav>
+    
+    <footer class="site-footer">
+        Copyright &copy; <span id="copyright-year"></span> Livefy TV. All Rights Reserved.
+    </footer>
+
+   <script src="app.js"></script>
+
+
+
+</body>
+</html>
