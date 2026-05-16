@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sinvar Sports Live - Watch Football & Cricket Live Streaming Free</title>
+<meta name="description" content="Watch live football, cricket and all sports matches free on Sinvar Sports. Stream UEFA Champions League, EPL, IPL, World Cup and more in HD.">
+
+<meta name="keywords" content="live sports streaming, football live streaming free, cricket live streaming free, watch football live online, UCL live streaming free, EPL live streaming free, IPL live streaming free, free live sports website, Sinvar Sports live">
+
+<meta name="robots" content="index, follow">
+<meta name="googlebot" content="index, follow, max-image-preview:large">
+
+<link rel="canonical" href="https://sinvarsports.vercel.app/">
+
+<meta property="og:title" content="Sinvar Sports Live Streaming Website">
+<meta property="og:description" content="Watch football live, cricket live and all sports matches free in HD on Sinvar Sports.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://sinvarsports.vercel.app/">
+<meta property="og:image" content="https://i.ibb.co.com/JWj71bth/20260323-130824.png">
+
+<!-- Favicon Updated with your Logo -->
+<link rel="icon" type="image/png" href="https://i.ibb.co.com/JWj71bth/20260323-130824.png">
+
+    <!-- External Scripts -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Video Player Engines -->
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark-mode">
+
+ <!-- Header -->
+    <header class="glass-header sticky top-0 z-50">
+        <div class="max-w-3xl mx-auto px-4 h-14 flex justify-between items-center">
+            <div class="flex items-center gap-2" onclick="location.reload()" style="cursor:pointer">
+                <!-- Header Icon -->
+                <div class="w-8 h-8 overflow-hidden rounded-md shadow-md bg-white p-0.5 border border-slate-300">
+                    <img src="https://i.ibb.co.com/JWj71bth/20260323-130824.png" class="w-full h-full object-contain rounded-sm" alt="Logo">
+                </div>
+                <!-- Dynamic text color fix applied here -->
+                <div class="text-[16px] font-black italic tracking-tighter uppercase text-[var(--text-main)]">SINVAR<span style="color: var(--primary);">SPORTS</span></div>
+            </div>
+            <div class="flex items-center gap-3">
+                <button onclick="toggleTheme()" class="w-7 h-7 border border-[var(--border-color)] rounded-full text-[var(--text-muted)] flex items-center justify-center bg-[var(--card-bg)] hover:text-white transition-all" id="theme-icon"><i class="fas fa-sun text-[10px]"></i></button>
+                <a href="https://t.me/sinvarsports" class="bg-[var(--primary)] text-white px-3 py-1 rounded-full text-[9px] font-black tracking-wider flex items-center gap-1.5 shadow-[0_2px_8px_rgba(225,29,72,0.4)] hover:bg-[var(--primary-hover)] transition-all"><i class="fab fa-telegram-plane text-[11px]"></i> JOIN</a>
+            </div>
+        </div>
+        
+<!-- SCROLLING NOTICE BAR -->
+<div class="notice-container">
+    <div class="notice-label"><i class="fas fa-bolt mr-1"></i> UPDATE</div>
+    <div class="notice-text" id="app-scrolling-notice">Welcome to Sinvar Sports. Enjoy Premium HD Live Sports & TV Channels For Free. Join our Telegram for updates.</div>
+</div>
+    </header>
+
+    <main id="main-ui" class="max-w-3xl mx-auto p-4 min-h-screen">
+        
+        <!-- Home View Container (Matches) -->
+        <div id="home-view">
+            <!-- Modern Pill Tabs -->
+            <div class="flex justify-center mb-5 mt-2">
+                <div id="home-tabs" class="inline-flex bg-[var(--card-bg)] rounded-full border border-[var(--border-color)] p-1 shadow-sm overflow-x-auto w-full max-w-[400px]">
+                    <div class="tab-btn flex-1 text-center active" onclick="switchTab('all', this)">All</div>
+                    <div class="tab-btn flex-1 text-center" onclick="switchTab('live', this)">Live</div>
+                    <div class="tab-btn flex-1 text-center" onclick="switchTab('upcoming', this)">Upcoming</div>
+                    <div class="tab-btn flex-1 text-center" onclick="switchTab('finished', this)">Finished</div>
+                </div>
+            </div>
+
+            <div id="date-context" class="mb-3 px-1 flex justify-between items-center">
+                <span class="text-[11px] font-black text-[var(--text-main)] uppercase tracking-wider flex items-center gap-2">Match Schedule</span>
+                <span id="today-date-str" class="text-[9px] font-bold text-[var(--text-muted)] border border-[var(--border-color)] px-2 py-0.5 rounded-md uppercase tracking-wider"></span>
+            </div>
+
+            <div id="list-view" class="space-y-3">
+                <div class="text-center py-20 text-[var(--primary)] font-bold uppercase tracking-widest text-[10px]"><i class="fas fa-circle-notch fa-spin mr-2"></i> Syncing Sports Data...</div>
+            </div>
+        </div>
+
+        <!-- Live TV View Container (IPTV Grid) -->
+        <div id="tv-view" class="hidden">
+            <div class="mb-4 px-1 flex justify-between items-center">
+                <span class="text-[11px] font-black text-[var(--text-main)] uppercase tracking-wider flex items-center gap-2">Premium Channels</span>
+                <span class="text-[9px] font-bold text-[var(--live-color)] bg-[var(--live-color)]/10 px-2 py-0.5 rounded border border-[var(--live-color)]/20 uppercase flex items-center gap-1"><span class="live-pulse bg-[var(--live-color)]"></span> LIVE TV</span>
+            </div>
+            <div id="tv-list-view" class="tv-grid">
+                <div class="col-span-4 text-center py-20 text-[var(--primary)] font-bold uppercase tracking-widest text-[10px]"><i class="fas fa-circle-notch fa-spin mr-2"></i> Loading Channels...</div>
+            </div>
+        </div>
+
+        <!-- Details View -->
+        <div id="details-view" class="hidden">
+            <button onclick="goBack()" class="text-[var(--text-muted)] font-bold mb-4 flex items-center gap-2 text-[10px] hover:text-[var(--primary)] transition uppercase tracking-wider bg-[var(--card-bg)] px-4 py-2 rounded-full border border-[var(--border-color)] w-max"><i class="fas fa-arrow-left"></i> Back To Events</button>
+            
+            <div class="bg-[var(--card-bg)] rounded-2xl border border-[var(--border-color)] overflow-hidden shadow-lg">
+                <!-- Hero Section -->
+                <div class="p-6 text-center border-b border-[var(--border-color)] bg-gradient-to-b from-[var(--primary)]/5 to-transparent relative">
+                    <div class="flex items-center justify-center gap-2 mb-6">
+                        <img id="det-league-img" src="" class="w-5 h-5 object-contain rounded-full bg-white/10 p-0.5">
+                        <span id="det-league-name" class="text-[10px] font-black text-[var(--text-muted)] uppercase tracking-wider"></span>
+                    </div>
+                    
+                    <div class="flex items-center justify-between gap-2 mt-2">
+                        <div class="flex-1 flex flex-col items-center">
+                            <div class="w-14 h-14 bg-white rounded-full p-1.5 shadow-md border border-slate-200 mb-3"><img id="det-t1-img" class="w-full h-full object-contain" src=""></div>
+                            <p id="det-t1-name" class="font-black text-xs uppercase leading-tight"></p>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <span class="text-sm font-black italic text-[var(--primary)] bg-[var(--primary)]/10 px-2 py-1 rounded">VS</span>
+                        </div>
+                        <div class="flex-1 flex flex-col items-center">
+                            <div class="w-14 h-14 bg-white rounded-full p-1.5 shadow-md border border-slate-200 mb-3"><img id="det-t2-img" class="w-full h-full object-contain" src=""></div>
+                            <p id="det-t2-name" class="font-black text-xs uppercase leading-tight"></p>
+                        </div>
+                    </div>
+                    
+                    <div id="det-time-box" class="mt-6 inline-block bg-[var(--bg-color)] border border-[var(--border-color)] text-[var(--text-muted)] px-5 py-2 rounded-full text-[10px] font-bold tracking-wider uppercase shadow-sm"></div>
+                    
+                    <div class="mt-4 flex justify-center">
+                        <div id="detStatus"></div>
+                    </div>
+                </div>
+                
+                <!-- Streaming Servers -->
+                <div class="p-5 border-b border-[var(--border-color)]">
+                    <h3 class="text-[11px] font-black text-[var(--text-main)] mb-3 tracking-wider uppercase flex items-center gap-2"><i class="fas fa-satellite-dish text-[var(--primary)]"></i> Select Server</h3>
+                    <div id="server-list" class="grid grid-cols-1 gap-2.5"></div>
+                </div>
+                
+                <!-- Broadcasters -->
+                <div class="p-5">
+                    <h3 class="text-[11px] font-black uppercase mb-3 flex items-center gap-2 text-[var(--text-main)]"><i class="fas fa-broadcast-tower text-[var(--primary)]"></i> Official Broadcasters</h3>
+                    <div id="broadcaster-table-container"></div>
+                </div>
+            </div>
+            
+            <!-- Details View Footer with About/Contact (With plenty of bottom padding) -->
+            <div class="mt-8 pt-6 text-center border-t border-[var(--border-color)] pb-32">
+                <div class="flex flex-wrap justify-center gap-4 mb-4 text-[9px] font-bold text-[var(--text-muted)] uppercase tracking-wider">
+                    <button onclick="openInfo('about')" class="hover:text-[var(--primary)] transition">About</button>
+                    <button onclick="openInfo('contact')" class="hover:text-[var(--primary)] transition">Contact</button>
+                    <button onclick="openInfo('privacy')" class="hover:text-[var(--primary)] transition">Privacy</button>
+                    <button onclick="openInfo('disclaimer')" class="hover:text-[var(--primary)] transition">Disclaimer</button>
+                </div>
+                <p class="text-[9px] font-black text-[var(--text-muted)] uppercase tracking-[1px]">&copy; 2026 <span style="color: var(--primary);">Sinvar Sports</span></p>
+            </div>
+        </div>
+
+        <footer id="main-footer" class="mt-10 py-8 text-center border-t border-[var(--border-color)] pb-24">
+            <div class="flex flex-wrap justify-center gap-4 mb-4 text-[9px] font-bold text-[var(--text-muted)] uppercase tracking-wider">
+                <button onclick="openInfo('about')" class="hover:text-[var(--primary)] transition">About</button>
+                <button onclick="openInfo('contact')" class="hover:text-[var(--primary)] transition">Contact</button>
+                <button onclick="openInfo('privacy')" class="hover:text-[var(--primary)] transition">Privacy</button>
+                <button onclick="openInfo('disclaimer')" class="hover:text-[var(--primary)] transition">Disclaimer</button>
+            </div>
+            <p class="text-[9px] font-black text-[var(--text-muted)] uppercase tracking-[1px]">Copyright &copy; 2026 <span style="color: var(--primary);">Sinvar Sports</span></p>
+        </footer>
+    </main>
+
+    <!-- BOTTOM NAVIGATION -->
+    <nav class="bottom-nav">
+        <div class="nav-btn active" onclick="navigate('home')">
+            <i class="fas fa-calendar-alt"></i>
+            <span>Matches</span>
+        </div>
+        <div class="nav-btn" onclick="navigate('tv')">
+            <i class="fas fa-tv"></i>
+            <span>Live TV</span>
+        </div>
+    </nav>
+
+    <!-- PLAYER OVERLAY -->
+    <div id="player-overlay" class="overflow-y-auto">
+        <div class="bg-[var(--bg-color)] p-3 border-b border-[var(--border-color)] flex items-center justify-between sticky top-0 z-[2100]">
+            <div class="flex items-center gap-3">
+                <button onclick="goBack()" class="text-[var(--text-main)] text-sm w-8 h-8 rounded-full bg-[var(--card-bg)] border border-[var(--border-color)] flex items-center justify-center hover:text-white hover:bg-[var(--primary)] transition"><i class="fas fa-arrow-left"></i></button>
+                <div>
+                    <div id="player-match-title" class="text-[var(--text-main)] text-[11px] font-bold truncate max-w-[200px]">Live Stream</div>
+                    <div class="text-[var(--primary)] font-black text-[8px] uppercase tracking-wider flex items-center gap-1 mt-1"><span class="live-pulse bg-[var(--primary)]"></span> <span id="player-viewer-count">14,250</span> Watching</div>
+                </div>
+            </div>
+            <div class="text-[8px] font-black bg-[var(--primary)] text-white px-2.5 py-1 rounded uppercase tracking-wider">HD Stream</div>
+        </div>
+        
+        <!-- ==============================================
+             NEW PLAYER SETUP (Copied from First Code) 
+             ============================================== -->
+        <div id="player-wrapper" style="width: 100%; aspect-ratio: 16/9; background: #000; position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+            
+            <video id="videoPlayer" controls autoplay style="width: 100%; height: 100%; display: none; outline: none; border: none;"></video>
+            
+            <iframe id="iframePlayer" allowfullscreen scrolling="no" allow="encrypted-media; autoplay" style="width: 100%; height: 100%; display: none; border: none; outline: none; position: absolute; top: 0; left: 0;"></iframe>
+            
+            <!-- LOADING OVERLAY -->
+            <div id="player-loader" class="absolute inset-0 bg-[var(--bg-color)] flex-col items-center justify-center z-[50]" style="display: none;">
+                <div class="w-14 h-14 rounded-xl bg-[var(--card-bg)] flex items-center justify-center p-2 animate-pulse border border-[var(--primary)]/30 shadow-[0_0_20px_rgba(225,29,72,0.4)]">
+                    <img src="https://i.ibb.co.com/JWj71bth/20260323-130824.png" class="w-full h-full object-contain">
+                </div>
+                <span class="text-[var(--primary)] text-[9px] font-black uppercase mt-4 tracking-[2px] animate-pulse">Connecting Server...</span>
+            </div>
+        </div>
+        
+        <div class="p-5 bg-[var(--bg-color)] min-h-[60vh] pb-32">
+            <div class="mb-5 p-4 bg-[var(--card-bg)] border border-[var(--border-color)] rounded-xl text-center">
+                <p class="text-[9px] text-[var(--text-muted)] font-bold uppercase tracking-wider leading-relaxed"><i class="fas fa-info-circle text-[var(--primary)] mr-1"></i> Stable internet is required for HD experience. Switch servers if buffering occurs.</p>
+            </div>
+            
+            <!-- Telegram Button -->
+            <a href="https://t.me/sinvarsports" target="_blank" class="flex items-center justify-center gap-3 p-4 bg-[var(--primary)] text-white rounded-xl font-bold shadow-[0_4px_15px_rgba(225,29,72,0.3)] active:scale-95 transition-all">
+                <i class="fab fa-telegram-plane text-2xl"></i>
+                <div class="text-left leading-none">
+                    <p class="text-[9px] opacity-80 mb-1 uppercase tracking-wider">Join Official Channel</p>
+                    <p class="text-sm uppercase tracking-wide">@sinvarsports</p>
+                </div>
+            </a>
+            
+            <!-- NEW SPONSOR BANNER ADDED HERE -->
+            <div class="mt-5 w-full rounded-xl overflow-hidden border border-[var(--border-color)] shadow-sm">
+                <img src="https://i.ibb.co.com/HLQGdDXG/GIF-20260508-095913-347.gif" alt="Sponsor Banner" class="w-full h-auto object-cover block">
+            </div>
+            
+            <!-- Player Overlay Footer with Links -->
+            <div class="mt-8 pt-6 text-center border-t border-[var(--border-color)]">
+                <div class="flex flex-wrap justify-center gap-4 mb-4 text-[9px] font-bold text-[var(--text-muted)] uppercase tracking-wider">
+                    <button onclick="openInfo('about')" class="hover:text-[var(--primary)] transition">About</button>
+                    <button onclick="openInfo('contact')" class="hover:text-[var(--primary)] transition">Contact</button>
+                    <button onclick="openInfo('privacy')" class="hover:text-[var(--primary)] transition">Privacy</button>
+                    <button onclick="openInfo('disclaimer')" class="hover:text-[var(--primary)] transition">Disclaimer</button>
+                </div>
+                <p class="text-[9px] font-black text-[var(--text-muted)] uppercase tracking-[1px]">&copy; 2026 <span class="text-[var(--primary)]">Sinvar Sports</span></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Info Modal -->
+    <div id="info-modal" class="modal-overlay" onclick="closeModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="flex justify-between items-center mb-5 border-b border-[var(--border-color)] pb-3">
+                <h2 id="modal-title" class="text-[var(--primary)] font-black uppercase text-xs tracking-wider"></h2>
+                <button onclick="closeModal()" class="text-[var(--text-muted)] w-7 h-7 bg-[var(--bg-color)] rounded-full flex items-center justify-center hover:text-[var(--danger)] transition"><i class="fas fa-times"></i></button>
+            </div>
+            <div id="modal-body" class="text-[11px] text-[var(--text-muted)] leading-relaxed text-justify"></div>
+        </div>
+    </div>
+
+ <script src="app.js"></script>
+
+</body>
+</html>
