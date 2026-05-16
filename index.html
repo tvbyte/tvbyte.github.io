@@ -81,11 +81,19 @@
       <div class="flex items-center gap-2">
         <label for="categorySelect" class="filter-label">Category</label>
         <select id="categorySelect" class="filter-select">
-          <option value="all">All Links</option>
-           <option value="Global">Global</option>
-          <option value="Bdix">Bdix</option>
-          <option value="Link">Link</option>
+          <option value="all">All</option>
+           <option value="bdix">BDIX</option>    
+           <option value="iptv">IPTV</option>   
+          <option value="global">Global</option>
+        </select>
+      </div>
+      <span class="w-px h-8 bg-[var(--border)]"></span>
+      <div class="flex items-center gap-2">
+        <label for="typeSelect" class="filter-label">Type</label>
+        <select id="typeSelect" class="filter-select">
+          <option value="all">All</option>
           <option value="host">Host</option>
+          <option value="link">Link</option>
         </select>
       </div>
       <span class="w-px h-8 bg-[var(--border)]"></span>
@@ -93,6 +101,8 @@
         <label for="filterSelect" class="filter-label">Filter</label>
         <select id="filterSelect" class="filter-select">
           <option value="">None</option>
+          <option value="online">Online</option>
+          <option value="offline">Offline</option>
           <option value="favorites">Favorites</option>
           <option value="most-clicked">Most Clicked</option>
           <option value="updated">Updated</option>
@@ -116,9 +126,10 @@
   </main>
   <script src="list.js"></script>
   <script>
-    let state = {
+     let state = {
       view: 'grid',
       category: 'all',
+      type: 'all',
       search: '',
       page: 1,
       perPage: 12,
@@ -136,6 +147,7 @@
     const perPageSelect = document.getElementById('perPageSelect');
     const categoryWrapper = document.getElementById('categoryWrapper');
     const categorySelect = document.getElementById('categorySelect');
+    const typeSelect = document.getElementById('typeSelect');
     const filterSelect = document.getElementById('filterSelect');
     const viewBtns = document.querySelectorAll('[data-view]');
     const themeBtns = document.querySelectorAll('[data-theme-btn]');
@@ -152,9 +164,7 @@
       const scrollTop = window.scrollY;
       const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
       const scrollPercent = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-      
       scrollProgress.style.width = scrollPercent + "%";
-      
       const hue = Math.floor(scrollPercent * 1.2); 
       const scrollColor = `hsl(${hue}, 80%, 50%)`;
       scrollProgress.style.background = `linear-gradient(90deg, ${scrollColor}, hsl(${hue + 40}, 80%, 50%))`;
@@ -163,11 +173,9 @@
       const percentText = scrollTopBtn.querySelector('.percent-text');
       const radius = progressCircle.r.baseVal.value;
       const circumference = radius * 2 * Math.PI;
-      
       progressCircle.style.strokeDasharray = `${circumference} ${circumference}`;
       progressCircle.style.strokeDashoffset = circumference - (scrollPercent / 100) * circumference;
       progressCircle.style.stroke = scrollColor;
-      
       percentText.textContent = Math.round(scrollPercent) + '%';
 
       if (scrollTop > 300) scrollTopBtn.classList.add('visible');
@@ -197,6 +205,10 @@
         );
       }
 
+      if (state.type !== 'all') {
+        filtered = filtered.filter(link => link.access === state.type);
+      }
+
       const cat = state.category;
       if (cat === 'favorites') {
         filtered = filtered.filter(link => state.favorites.includes(link.id));
@@ -211,6 +223,10 @@
           .map(link => ({ ...link, score: (state.likes[link.id] || 0) - (state.dislikes[link.id] || 0) }))
           .filter(link => link.score > 0)
           .sort((a, b) => b.score - a.score);
+      } else if (cat === 'online') {
+        filtered = filtered.filter(link => !link.disabled);
+      } else if (cat === 'offline') {
+        filtered = filtered.filter(link => link.disabled);
       } else if (cat !== 'all') {
         filtered = filtered.filter(link => link.category === cat);
       }
@@ -233,7 +249,7 @@
     function getFaviconUrl(url) { try { const domain = new URL(url).hostname; return `https://www.google.com/s2/favicons?domain=${domain}&sz=64`; } catch { return null; } }
     function getTechTagClass(tech) {
         if (!tech) return '';
-        return { m3u: 'tag-m3u', js: 'tag-js', iframe: 'tag-iframe', html: 'tag-html' }[tech.toLowerCase()] || '';
+        return { m3u: 'tag-m3u', js: 'tag-js', iframe: 'tag-iframe', html: 'tag-html', json: 'tag-json' }[tech.toLowerCase()] || '';
     }
 
     function createLinkCard(link, index) {
@@ -307,7 +323,7 @@
           
           <div class="${state.view === 'list' ? 'flex-1 min-w-0 w-full sm:w-auto' : ''}">
             <h3 class="font-semibold text-[var(--fg)] mb-1 truncate flex items-center gap-2">${link.name} ${statusDotHtml}</h3>
-            ${link.description ? `<p class="text-xs text-[var(--muted)] mb-2 line-clamp-1">${link.description}</p>` : ''}
+            ${link.description ? `<p class="text-xs text-[var(--muted)] mb-2 line-clamp-2">${link.description}</p>` : ''}
             <div class="flex items-center justify-between gap-2 mt-2">
                 <div class="flex flex-wrap items-center gap-2">
                     ${link.labels.slice(0, 3).map(label => `<span class="text-xs px-2 py-1 rounded bg-[var(--bg-secondary)] text-[var(--muted)] border border-[var(--border)]">${label}</span>`).join('')}
@@ -354,7 +370,7 @@
     }
 
     function syncSelects() {
-      const filterValues = ['favorites', 'most-clicked', 'updated', 'top-rated'];
+      const filterValues = ['favorites', 'most-clicked', 'updated', 'top-rated', 'online', 'offline'];
       if (filterValues.includes(state.category)) {
         categorySelect.value = 'all';
         filterSelect.value = state.category;
@@ -362,6 +378,7 @@
         categorySelect.value = state.category;
         filterSelect.value = '';
       }
+      typeSelect.value = state.type;
     }
 
     function updateFilterDisabledStates() {
@@ -369,11 +386,15 @@
       const hasClicks = Object.values(state.clickCounts).some(v => v > 0);
       const hasUpdated = linksData.some(l => l.updated);
       const hasLikes = Object.values(state.likes).some(v => v > 0);
+      const hasOnline = linksData.some(l => !l.disabled);
+      const hasOffline = linksData.some(l => l.disabled);
 
       filterSelect.querySelector('option[value="favorites"]').disabled = !hasFavs;
       filterSelect.querySelector('option[value="most-clicked"]').disabled = !hasClicks;
       filterSelect.querySelector('option[value="updated"]').disabled = !hasUpdated;
       filterSelect.querySelector('option[value="top-rated"]').disabled = !hasLikes;
+      filterSelect.querySelector('option[value="online"]').disabled = !hasOnline;
+      filterSelect.querySelector('option[value="offline"]').disabled = !hasOffline;
     }
 
     function renderLinks() {
@@ -448,11 +469,18 @@
       renderLinks();
     });
 
+    typeSelect.addEventListener('change', (e) => {
+      state.type = e.target.value;
+      state.page = 1;
+      renderLinks();
+    });
+
     filterSelect.addEventListener('change', (e) => {
       if (e.target.value === '') {
         state.category = categorySelect.value;
       } else {
         state.category = e.target.value;
+        categorySelect.value = 'all';
       }
       state.page = 1;
       renderLinks();
