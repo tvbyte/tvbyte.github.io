@@ -1,5 +1,7 @@
 const linksData = [
-{ id: 14, name: '11Plus', url: 'http://ott.11plus.live/',  labels: ['bdix', 'link'], category: 'bdix', updated: true, tech: 'JS', access: 'link', disabled: false, description: 'Live TV  from your favorite channels on any device.' },    
+   
+{ id: 15, name: 'Famelack', url: ' https://famelack.com/',    labels: ['bdix', 'link'], category: 'global', updated: true, tech: 'JS', access: 'link', disabled: false, description: 'Live TV  from your favorite channels on any device.' },    
+{ id: 14, name: '11Plus', url: 'http://ott.11plus.live/',    labels: ['bdix', 'link'], category: 'bdix', updated: true, tech: 'JS', access: 'link', disabled: false, description: 'Live TV  from your favorite channels on any device.' },    
 { id: 13, name: 'Livetv', url: '/tvsite/livetv/index.html',  labels: ['bdix', 'host'], category: 'bdix', updated: true, tech: 'JS', access: 'host', disabled: false, description: 'Live TV  from your favorite channels on any device.' },    
 { id: 12, name: 'Protorongo+', url: '/tvsite/protorongoplus/index.html',  labels: ['iptv', 'host'], category: 'iptv', updated: true, tech: 'JS', access: 'host', disabled: false, description: 'Live TV  from your favorite channels on any device.' },
 { id: 11, name: 'Livefy', url: '/tvsite/livefy/index.html',  labels: ['Iptv', 'host'], category: 'iptv', updated: true, tech: 'JSON', access: 'host', disabled: false, description: 'Live TV  from your favorite channels on any device.' },   
