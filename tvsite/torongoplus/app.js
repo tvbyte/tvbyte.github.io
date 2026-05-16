@@ -170,8 +170,8 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
-const ORIGINAL_SITE = 'https://tvbyte.github.io/';
-const ALLOWED = ['tvbyte.github.io/'];
+const ORIGINAL_SITE = '';
+const ALLOWED = [''];
 const host = window.location.hostname;
 
 const isAllowed = ALLOWED.some(domain => host === domain || host.endsWith('.' + domain));
