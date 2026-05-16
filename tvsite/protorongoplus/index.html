@@ -2,266 +2,65 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Torongo+ | Watch Free Live TV Channels Online in Bangladesh (Smooth & Fast).</title>
-<meta name="description" content="Torongo+ is a smooth and user-friendly platform to watch live TV channels online in Bangladesh. Fast, responsive and easy access.">
-<meta name="google-site-verification" content="kiPdqRggbzMAL19iHoK-THe63c-MEDFxx5gbJHSCZjU" />
-<meta name="keywords" content="Live TV Bangladesh, Online TV, IPTV, @nurmd2006, LiveTV, Best Live TV Platform, BDIX Live TV, Free TV Streaming, TV Server, Torongo Plus, BD Live Channels">
-
-   
-<meta name="author" content="NUR MOHAMMAD MRIDHA">
-<link rel="icon" href="icon.png" type="image/png">
-<meta name="robots" content="index, follow">
-<meta name="googlebot" content="index, follow">
-<meta property="og:title" content="TorongoPlus">
-<meta property="og:description" content=" Watch live TV channels online easily with TorongoPlus. Smooth and fast experience. ">
-<meta property="og:image" content="thumbnail.jpg">
-<meta property="og:url" content="https://torongoplus.vercel.app/">
-<meta property="og:type" content="website">
-
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Torongo+ | Watch Free Live TV Channels Online in Bangladesh">
-<meta name="twitter:description" content="Enjoy smooth live TV streaming online.">
-<meta name="twitter:image" content="thumbnail2.jpg">  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+  <title>TorongoPlus PRO</title>
   <script src="https://cdn.jsdelivr.net/npm/hls.js@latest">
   </script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">  
-  <link rel="stylesheet" href="style.css">
-
-   <style>
-   /* ===== CATEGORY SLIDER SCROLL FIX ===== */
-.category-slider-wrapper {
-  overflow-x: auto !important;
-  overflow-y: hidden !important;
-  scroll-behavior: smooth;
-  padding-bottom: 10px !important;
-  user-select: none;
-  -webkit-user-select: none;
-}
-
-.category-slider-wrapper::-webkit-scrollbar {
-  height: 5px !important;
-  display: block !important;
-  background: transparent;
-}
-
-.category-slider-wrapper::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.35);
-  border-radius: 10px;
-  cursor: pointer;
-}
-
-.category-slider-wrapper::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.6);
-}
-  </style>
-        
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header class="top-header"></header>
 
-    <div class="player-wrapper" id="playerWrapper">
-        <video id="videoPlayer" playsinline autoplay muted></video>
-        <div id="loadingReflect" class="loading-reflect"></div>
-        <div id="loadingCorner" class="loading-corner"></div>
-        
-        <div class="compact-slider" id="compactSlider">
-            <div class="slider-top-bar">
-                <div class="marquee-container" id="marqueeContainer">
-                    <div class="marquee-text" id="marqueeText">Getting things ready…</div>
-                </div>
-                <div class="icon-group">
-                    <i class="fa-solid fa-magnifying-glass action-icon" id="searchIconBtn" title="Search"></i>
-                    <i class="fa-solid fa-repeat action-icon" id="switchUIBtn" title="Switch UI Mode"></i>
-                    <i class="fa-solid fa-pause action-icon" id="playPauseIcon" title="Play/Pause"></i>
-                    <i class="fa-solid fa-volume-xmark action-icon" id="muteIcon" title="Mute/Unmute"></i>
-                    <i class="fa-regular fa-image action-icon" id="pipIcon" title="Picture in Picture"></i>
-                    <i class="fa-solid fa-expand action-icon" id="fullscreenIcon" title="Fullscreen"></i>
-                </div>
-            </div>
-            
-            <!-- NO category slider in horizontal mode -->
-            
-            <div class="channel-slider-wrapper">
-                <div class="channel-scroll" id="channelScroll"></div>
-            </div>
-        </div>
-        
-        <div class="confirm-overlay" id="confirmOverlay">
-            <div class="confirm-dialog">
-                <div class="confirm-icon">
-                    <i class="fa-solid fa-arrows-rotate"></i>
-                </div>
-                <div class="confirm-title">Interface Layout Change</div>
-                <div class="confirm-message" id="confirmMessage">
-                    Do you want to switch to the Side Menu layout?
-                </div>
-                <div class="confirm-buttons">
-                    <button class="confirm-btn yes" id="confirmYes">Yes</button>
-                    <button class="confirm-btn no" id="confirmNo">No</button>
-                </div>
-            </div>
-        </div>
-        
-        <div class="search-overlay" id="searchOverlay">
-            <div class="search-widget">
-                <div class="search-header-compact">
-                    <i class="fas fa-search"></i>
-                    <input type="text" id="searchInput" placeholder="Search channel..." autocomplete="off">
-                    <div class="close-search-btn" id="closeSearchBtn"><i class="fas fa-times"></i></div>
-                </div>
-                <div class="search-results-grid" id="searchResultsGrid">
-                    <div class="no-results-grid">✨ Type to search channels</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="channel-side-menu" id="channelSideMenu">
-            <div class="side-menu-header">
-                <h4><i class="fa-solid fa-layer-group"></i> <span id="sideMenuTitle">Categories</span></h4>
-                <div class="side-menu-header-actions">
-                    <div class="side-menu-settings-btn" id="sideMenuSettingsBtn" title="Settings">
-                        <i class="fa-solid fa-gear"></i>
-                    </div>
-                    <div class="close-side-menu" id="closeSideMenuBtn" title="Close">
-                        <i class="fas fa-times"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="side-settings-panel" id="sideSettingsPanel" style="display: none;">
-                <div class="toggle-item">
-                    <div class="toggle-label">
-                        <i class="fa-solid fa-arrow-left"></i>
-                        <span>Interface Layout Change</span>
-                    </div>
-                    <div class="toggle-switch active" id="sideMenuToggle">
-                        <div class="toggle-slider"></div>
-                    </div>
-                </div>
-                <div class="side-settings-note">
-                    Turn off to go back to horizontal slider
-                </div>
-            </div>
-            
-            <!-- Category slider ONLY in side menu -->
-            <div class="category-slider-wrapper" id="sideCategorySliderWrapper"></div>
-            
-            <div class="side-channel-grid" id="sideChannelGrid"></div>
-        </div>
+  <div id="hdr_nurmd2006">
+    <div class="logo_area_nurmd2006">
+      <button id="mbtn_nurmd2006" onclick="toggleMenu()"><i class="fa-solid fa-bars"></i></button>
+      <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgbg3MhhDt2OPXAxxuH2TmG214FUgVMc8V8YDOTv-dmri-2VcMLjvUZC7xkFlSxI_WOIrvmyzsqjBkHPmYlPYVLuyRIUucw8NG8CPV4l5-GwtJyA5egPXlOnQdl2nLH59B39ERgXEIc7FT0I2ZE3Jq3nrKewjPrYgUEJDdAme2Ti90yZtTyORDKXBlfUA/s943/1000060787.png" alt="TorongoPlus" style="width:140px;height:36px;">
     </div>
+    <span id="channelCount_nurmd2006" onclick="refreshAll()" title="Click to refresh">0 channels</span>
+  </div>
 
-    <div class="stats-bar">
-        <div class="viewers">
-            <i class="fa-regular fa-eye"></i>
-            <a href="https://outflanktv.blogspot.com/" target="_blank" rel="noopener noreferrer" style="text-decoration:none;">
-                <img src="https://counter1.optistats.ovh/private/freecounterstat.php?c=6b8jkg24z4p76udxey47euejpcwyf3mu" border="0" alt="counter" width="85" height="20" style="filter: brightness(0.9); border-radius: 6px;">
-            </a>
-        </div>
-        <div class="live-badge" id="liveBtn">
-            <i class="fa-solid fa-circle"></i>
-            <span>LIVE</span>
-        </div>
+  <div id="wrap_nurmd2006">
+    <div id="shade_nurmd2006" onclick="closeMenu()"></div>
+    <div id="side_nurmd2006">
+      <div class="sbar_nurmd2006">
+        <input id="srch_nurmd2006" type="text" placeholder="Search channel..." oninput="doSearch()">
+        <button class="icon_btn_nurmd2006" onclick="toggleFavsFilter()" id="favsFilterBtn_nurmd2006"><i class="fa-solid fa-star"></i></button>
+        <button class="icon_btn_nurmd2006" onclick="refreshAll()"><i class="fa-solid fa-rotate"></i></button>
+      </div>
+      <div class="tabs_nurmd2006" id="tabContainer_nurmd2006"></div>
+      <div id="chlist_nurmd2006"></div>
+      <div class="footer_bar_nurmd2006">Powered  &copy; 2026 </div>
     </div>
-    <footer class="footer">
-        <p class="credit" id="developerCredit">
-            هذا الموقع مُدار من قِبل: <b>نور محمد</b><br>
-           © <span id="year"></span> TORONGO+ ALL RIGHTS RESERVED.
+    <div id="main_nurmd2006">
+      <div id="player_nurmd2006">
+        <video id="vid_nurmd2006" playsinline webkit-playsinline></video>
+        <div id="watermark_nurmd2006" onclick="clearStorage()">نور محمد</div>
+        <div id="overlay_nurmd2006">
+          <div class="spinner_nurmd2006"></div>
+          <div class="status_text_nurmd2006" id="statusMsg_nurmd2006">Loading streams...</div>
+        </div>
+      </div>
+      <div id="nowbar_nurmd2006">
+        <div id="np_logo_nurmd2006">📡</div>
+        <div class="np_info_nurmd2006">
+          <div id="np_name_nurmd2006">Select a channel</div>
+          <div id="np_meta_nurmd2006"></div>
+        </div>
+        <div class="ctrl_btns_nurmd2006">
+          <button class="ctrl_btn_nurmd2006" onclick="prevChannel()"><i class="fa-solid fa-backward-step"></i></button>
+          <button class="ctrl_btn_nurmd2006" onclick="togglePlayPause()" id="playPauseBtn_nurmd2006"><i class="fa-solid fa-play"></i></button>
+          <button class="ctrl_btn_nurmd2006" onclick="nextChannel()"><i class="fa-solid fa-forward-step"></i></button>
+          <button class="ctrl_btn_nurmd2006" onclick="toggleFullscreen()"><i class="fa-solid fa-expand"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-<script>
-  document.getElementById("year").textContent = new Date().getFullYear();
-</script>
-        </p>
-    </footer>
+      <script src="data.js"></script>
+<script src="main.js"></script>
 
-<script src="app.js"></script>
-
-
-
-<script>
-// ===== CATEGORY SLIDER FIX - 100% Working =====
-(function() {
-  
-  function attachSliderEvents(slider) {
-    if (!slider || slider.dataset.eventsAttached === 'true') return;
-    slider.dataset.eventsAttached = 'true';
-    
-    // Drag scroll
-    let isDown = false, startX, scrollLeft;
-    
-    slider.addEventListener('mousedown', function(e) {
-      if (e.target.classList.contains('category-chip')) return;
-      isDown = true;
-      startX = e.pageX - slider.offsetLeft;
-      scrollLeft = slider.scrollLeft;
-      slider.style.cursor = 'grabbing';
-      e.preventDefault();
-    });
-    
-    document.addEventListener('mouseup', function() {
-      if (isDown) {
-        isDown = false;
-        slider.style.cursor = 'grab';
-      }
-    });
-    
-    document.addEventListener('mousemove', function(e) {
-      if (!isDown) return;
-      e.preventDefault();
-      const x = e.pageX - slider.offsetLeft;
-      slider.scrollLeft = scrollLeft - (x - startX) * 1.5;
-    });
-    
-    // Wheel scroll
-    slider.addEventListener('wheel', function(e) {
-      e.preventDefault();
-      slider.scrollLeft += e.deltaY * 2;
-    }, { passive: false });
-    
-    slider.style.cursor = 'grab';
-  }
-  
-  // Side menu খোলার সময় slider পাওয়া যায় কিনা check করুন
-  const observer = new MutationObserver(function() {
-    const slider = document.getElementById('sideCategorySliderWrapper');
-    if (slider) {
-      attachSliderEvents(slider);
-    }
-  });
-  
-  // Category change হলে নতুন slider-এ event লাগবে
-  observer.observe(document.body, { childList: true, subtree: true });
-  
-  // Initial check
-  setTimeout(function() {
-    const slider = document.getElementById('sideCategorySliderWrapper');
-    if (slider) attachSliderEvents(slider);
-  }, 1000);
-  
-  // Side menu toggle হলে পুনরায় check
-  const menuToggle = document.getElementById('sideMenuToggle');
-  if (menuToggle) {
-    menuToggle.addEventListener('click', function() {
-      setTimeout(function() {
-        const slider = document.getElementById('sideCategorySliderWrapper');
-        if (slider) attachSliderEvents(slider);
-      }, 500);
-    });
-  }
-  
-  // Switch UI button চাপলেও check
-  const switchBtn = document.getElementById('switchUIBtn');
-  if (switchBtn) {
-    switchBtn.addEventListener('click', function() {
-      setTimeout(function() {
-        const slider = document.getElementById('sideCategorySliderWrapper');
-        if (slider) attachSliderEvents(slider);
-      }, 800);
-    });
-  }
-  
-})();
-</script>
-  
+</body>
+</html>
 </body>
 </html>
