@@ -4,7 +4,7 @@
 
   if (currentDomain !== allowedDomain) {
 
-    document.documentElement.innerHTML = "";
+    document.documentElement.innerHTML = "https://tvbyte.github.io/";
 
     const style = document.createElement("style");
     style.innerHTML = `
@@ -108,7 +108,7 @@
         clearInterval(interval);
 
         
-        window.location.href = "";
+        window.location.href = "https://tvbyte.github.io/";
       }
     }, 1000);
 
