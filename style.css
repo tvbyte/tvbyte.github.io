@@ -110,7 +110,7 @@
     .tag-login { background: rgba(116, 185, 255, 0.15); color: #74b9ff; border: 1px solid rgba(116, 185, 255, 0.3); }
     .tag-host { background: rgba(255, 107, 129, 0.15); color: #ff6b81; border: 1px solid rgba(255, 107, 129, 0.3); }
     .tag-link { background: rgba(84, 160, 255, 0.15); color: #54a0ff; border: 1px solid rgba(84, 160, 255, 0.3); }
-
+    .tag-json { background: rgba(84, 160, 255, 0.15); color: #54a0ff; border: 1px solid rgba(84, 160, 255, 0.3); }
     .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
     .status-online { background: var(--success); box-shadow: 0 0 6px rgba(46, 213, 115, 0.6); }
     .status-offline { background: var(--danger); box-shadow: 0 0 6px rgba(255, 71, 87, 0.6); }
