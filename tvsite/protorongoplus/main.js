@@ -332,7 +332,10 @@ var allChannels = [],
       container.appendChild(script); 
     }
 
-   
+     function renderChannelList() { 
+      
+        html += createChannelHTML(filteredChannels[i]); 
+      }
       if (filteredChannels.length === 0) { 
         html = '<div style="padding:30px;font-size:12px;color:var(--t3_nurmd2006);text-align:center">No channels</div>'; 
       } 
