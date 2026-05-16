@@ -323,7 +323,7 @@
           
           <div class="${state.view === 'list' ? 'flex-1 min-w-0 w-full sm:w-auto' : ''}">
             <h3 class="font-semibold text-[var(--fg)] mb-1 truncate flex items-center gap-2">${link.name} ${statusDotHtml}</h3>
-            ${link.description ? `<p class="text-xs text-[var(--muted)] mb-2 line-clamp-2">${link.description}</p>` : ''}
+            ${link.description ? `<p class="text-xs text-[var(--muted)] mb-1 line-clamp-1">${link.description}</p>` : ''}
             <div class="flex items-center justify-between gap-2 mt-2">
                 <div class="flex flex-wrap items-center gap-2">
                     ${link.labels.slice(0, 3).map(label => `<span class="text-xs px-2 py-1 rounded bg-[var(--bg-secondary)] text-[var(--muted)] border border-[var(--border)]">${label}</span>`).join('')}
