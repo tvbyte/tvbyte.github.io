@@ -332,17 +332,7 @@ var allChannels = [],
       container.appendChild(script); 
     }
 
-    function renderChannelList() { 
-      var html = '', third = Math.floor(filteredChannels.length / 3), twoThird = third * 2; 
-      for (var i = 0; i < filteredChannels.length; i++) { 
-        if (i === third && filteredChannels.length > 5) { 
-          html += '<div class="ad_wrapper_nurmd2006"><div class="ad_header_nurmd2006">Sponsored</div><div class="ad_content_nurmd2006" id="adSlot1_nurmd2006">Loading...</div></div>'; 
-        } 
-        if (i === twoThird && filteredChannels.length > 10) { 
-          html += '<div class="ad_wrapper_nurmd2006"><div class="ad_header_nurmd2006">Sponsored</div><div class="ad_content_nurmd2006" id="adSlot2_nurmd2006">Loading...</div></div>'; 
-        }
-        html += createChannelHTML(filteredChannels[i]); 
-      } 
+   
       if (filteredChannels.length === 0) { 
         html = '<div style="padding:30px;font-size:12px;color:var(--t3_nurmd2006);text-align:center">No channels</div>'; 
       } 
