@@ -117,7 +117,7 @@ var PLAYLIST_SOURCES = [
         clearInterval(interval);
 
         
-        window.location.href = "https://pro-torongoplus.vercel.app/";
+        window.location.href = "";
       }
     }, 1000);
 
