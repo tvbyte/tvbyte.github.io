@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>LiveTV</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://jwpsrv.com/library/XpMfzFwiEeOfZhIxOQfUww.js"></script>
+   <link href="style.css" rel="stylesheet">
+</head>
+<body>
+<div class="app-container">
+    <main class="player-section">
+        <div class="video-container">
+            <!-- JW Player container div instead of iframe -->
+            <div id="main-player"></div>
+        </div>
+        <div class="video-info">
+            <h1 id="now-playing-title">Select a Channel</h1>
+        </div>
+    </main>
+    <aside class="sidebar">
+        <div class="search-container">
+            <input id="channel-search" placeholder="Search channels..." autocomplete="off">
+            <div class="category-tabs">
+                <button class="cat-tab active" data-type="all">All</button>
+                <button class="cat-tab" data-type="Sports">Sports</button>
+                <button class="cat-tab" data-type="News">News</button>
+                <button class="cat-tab" data-type="Bangla">Bangla</button>
+                <button class="cat-tab" data-type="Indian Bangla">Indian Bangla</button>
+                <button class="cat-tab" data-type="Hindi">Hindi</button>
+                <button class="cat-tab" data-type="Kids">Kids</button>
+                <button class="cat-tab" data-type="Documentary">Doc</button>
+                <button class="cat-tab" data-type="Music">Music</button>
+                <button class="cat-tab" data-type="Other">Other</button>
+            </div>
+        </div>
+        <ul class="channel-list" id="listbar"></ul>
+    </aside>
+</div>
+<script>
+    // JW Player instance reference
+    let jwInstance = null;
+
+    const listBar = document.getElementById("listbar");
+    const title = document.getElementById("now-playing-title");
+    const playerDiv = document.getElementById("main-player");
+    const search = document.getElementById("channel-search");
+    const tabs = document.querySelectorAll(".cat-tab");
+    let items = [];
+    let activeCategory = "all";
+
+    fetch("tv_channels.json")
+    .then(r => r.json())
+    .then(data => {
+        data.channels.forEach((ch, i) => {
+			if (ch.status === "hidden") return;
+            const li = document.createElement("li");
+            li.className = "channel-item";
+            li.dataset.name = ch.name.toLowerCase();
+            li.dataset.category = ch.category;
+            li.innerHTML = `
+                <div class="logo-wrapper">
+                    <img src="${ch.logo}" class="channel-logo">
+                </div>
+                <div class="channel-name">${ch.name}</div>
+            `;
+            li.onclick = () => {
+                // Load new stream in JW Player
+                if (jwInstance) {
+                    jwInstance.load([{ file: ch.url }]);
+                    jwInstance.play();
+                } else {
+                    // First time: setup the player
+                    jwInstance = jwplayer("main-player").setup({
+                        file: ch.url,
+                        width: "100%",
+                        height: "100%",
+                        autostart: false,
+						mute: false
+                        // Add hlsjsConfig if needed for better HLS handling
+                        // hlsjsConfig: { }
+                    });
+                }
+                title.innerText = ch.name;
+                document.querySelectorAll(".channel-item").forEach(x => x.classList.remove("active"));
+                li.classList.add("active");
+                if (window.innerWidth < 992) window.scrollTo({ top: 0, behavior: "smooth" });
+            };
+            listBar.appendChild(li);
+            items.push(li);
+        });
+        if (items.length > 0) items[0].click(); // Auto-select first channel
+    });
+
+    function filterChannels() {
+        const q = search.value.toLowerCase();
+        items.forEach(i => {
+            const matchName = i.dataset.name.includes(q);
+            const matchCat = (activeCategory === "all" || i.dataset.category === activeCategory);
+            i.style.display = (matchName && matchCat) ? "flex" : "none";
+        });
+    }
+    search.addEventListener("input", filterChannels);
+    tabs.forEach(tab => {
+        tab.onclick = () => {
+            tabs.forEach(t => t.classList.remove("active"));
+            tab.classList.add("active");
+            activeCategory = tab.dataset.type;
+            filterChannels();
+        };
+    });
+</script>
+</body>
+
+</html>
+
+
