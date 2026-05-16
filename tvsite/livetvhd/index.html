@@ -50,7 +50,7 @@
     let items = [];
     let activeCategory = "all";
 
-    fetch("tv_channels.json")
+    fetch("https://tvbyte.github.io/tvsite/livetvhd/tv_channels.json")
     .then(r => r.json())
     .then(data => {
         data.channels.forEach((ch, i) => {
