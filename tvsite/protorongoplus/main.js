@@ -332,10 +332,19 @@ var allChannels = [],
       container.appendChild(script); 
     }
 
-     function renderChannelList() { 
-      
+  function renderChannelList() { 
+      var html = '', third = Math.floor(filteredChannels.length / 3), twoThird = third * 2; 
+      for (var i = 0; i < filteredChannels.length; i++) { 
+        if (i === third && filteredChannels.length > 5) { 
+          html += ''; 
+        } 
+        if (i === twoThird && filteredChannels.length > 10) { 
+          html += ''; 
+        }
         html += createChannelHTML(filteredChannels[i]); 
       }
+
+
       if (filteredChannels.length === 0) { 
         html = '<div style="padding:30px;font-size:12px;color:var(--t3_nurmd2006);text-align:center">No channels</div>'; 
       } 
